@@ -1,1 +1,1 @@
-u can find it by "@lastik_dev_bot" on telegram
+u can find it by "@lastik_test_bot" on telegram
