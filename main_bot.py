@@ -6,7 +6,7 @@ from english_bot_database.english_bot_database import EnglishBotDatabase
 from handlers import main_menu_handler, word_constructor_handler
 from handlers import user_handlers
 from handlers import guess_words_handler
-from handlers import constructor_phrases_handler
+from handlers import constructor_phrases_handler, chuck_norris_handler
 from handlers import abnormal_verbs_handler, phrasal_verbs_handler
 # Вместо config.token нужно вставить токен вашего бота, полученный у @BotFather
 BOT_TOKEN = config.token
@@ -23,6 +23,7 @@ async def main():
     dp.include_router(user_handlers.router)
     dp.include_router(abnormal_verbs_handler.router)
     dp.include_router(phrasal_verbs_handler.router)
+    dp.include_router(chuck_norris_handler.router)
     dp.include_router(main_menu_handler.router)
     dp.include_router(guess_words_handler.router)
     dp.include_router(word_constructor_handler.router)

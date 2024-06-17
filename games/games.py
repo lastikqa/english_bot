@@ -1,3 +1,5 @@
+import time
+
 from english_bot_database.english_bot_database import EnglishBotDatabase
 import requests
 from bs4 import BeautifulSoup
@@ -28,28 +30,33 @@ class Games:
         return question, variants
 
     @staticmethod
-    def getting_data_guessing_game(user_param: str, headers: str = GuessingGameApi.headers,
-                                   params: str = GuessingGameApi.params_game,
+    def getting_data_guessing_game(user_param: str, headers=GuessingGameApi.headers,
+                                   params: str = GuessingGameApi.params,
                                     translation: str = "rus") -> tuple:
         """getting the guessind word game data"""
         params["slovar"] = user_param
         params["first"] = translation
-        response = requests.get(GuessingGameApi.url, headers=headers, params=params).json()
+        params["rand"] = random.random()
+        response = requests.get('https://hosgeldi.com/eng/guess_new.php', params=params,
+                                cookies=GuessingGameApi.cookies, headers=headers).json()
         question = response["question"]
         answer = response["answer"]
         variants = list(response["variants"])
         return question, answer, variants
 
     def getting_constcuctor_games(self, translation: str = "rus", user_param: str = "v",
-                                  params: str = GuessingGameApi.params_game,
-                                  headers: str = GuessingGameApi.headers):
+                                  params: str = GuessingGameApi.params,
+                                  headers=GuessingGameApi.headers):
 
         params["slovar"] = user_param
         params["first"] = translation
+        params["rand"] = random.random()
         try:
             response = requests.get(GuessingGameApi.url, params=params, cookies=GuessingGameApi.cookies,
                                     headers=headers).json()
-        except requests.exceptions.JSONDecodeError:
+        except requests.JSONDecodeError:
+            time.sleep(5)
+
             response = requests.get(GuessingGameApi.url, params=params, cookies=GuessingGameApi.cookies,
                                     headers=headers).json()
         question = response["answer"]
