@@ -31,7 +31,7 @@ async def process_start_command(message: Message):
 @router.message()
 async def menu_button(message: Message):
     """the function processes menu button"""
-    mesaage_id = message.message_id
+    message_id = message.message_id
     chat_id = message.chat.id
     if message.text == "/help":
         keyboard = create_inline_kb(1, last_btn=default_menu)
@@ -41,4 +41,4 @@ async def menu_button(message: Message):
         database = EnglishBotDatabase(message.from_user.id)
         translation = database.checking_user_translation(user_id=message.from_user.id)
         database.updating_user_translation(translation=translation, user_id=message.from_user.id)
-    await bot.delete_message(chat_id, mesaage_id)
+    await bot.delete_message(chat_id, message_id)

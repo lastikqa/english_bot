@@ -16,7 +16,7 @@ BOT_TOKEN = config.token
 async def main():
     EnglishBotDatabase.creating_users_db()
 
-    time.sleep(5)
+    time.sleep(2)
     bot = Bot(token=BOT_TOKEN)
     dp = Dispatcher()
 

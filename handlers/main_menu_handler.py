@@ -1,6 +1,6 @@
 from aiogram import Router
 from keyboards.keyboards import create_inline_kb
-from lexicon.lexicon import start_keyboard, guess_word_keyboard, default_menu, chuck_keyboard
+from lexicon.lexicon import start_keyboard, guess_word_keyboard, default_menu
 from aiogram.types import CallbackQuery
 from games.games import Games
 from english_bot_database.english_bot_database import EnglishBotDatabase
@@ -37,7 +37,5 @@ async def process_main_menu(callback: CallbackQuery):
         variants, question = gamer.constructor_games(user_id=user_id, user_param=user_param)
         keyboard = create_inline_kb(2, default_menu, *variants)
         await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
-
-
 
     await callback.answer()

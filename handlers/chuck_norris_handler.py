@@ -1,10 +1,10 @@
 from aiogram import Router
 from keyboards.keyboards import create_inline_kb
-from lexicon.lexicon import start_keyboard, guess_word_keyboard, default_menu, chuck_keyboard
+from lexicon.lexicon import default_menu, chuck_keyboard
 from aiogram.types import CallbackQuery
 from games.games import Games
 from english_bot_database.english_bot_database import EnglishBotDatabase
-from filters.chuck_norris_filter import  chuck_filter
+from filters.chuck_norris_filter import chuck_filter
 
 router = Router()
 

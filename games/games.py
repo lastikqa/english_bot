@@ -1,5 +1,4 @@
 import time
-
 from english_bot_database.english_bot_database import EnglishBotDatabase
 import requests
 from bs4 import BeautifulSoup
@@ -30,9 +29,10 @@ class Games:
         return question, variants
 
     @staticmethod
-    def getting_data_guessing_game(user_param: str, headers=GuessingGameApi.headers,
-                                   params: str = GuessingGameApi.params,
-                                    translation: str = "rus") -> tuple:
+    def getting_data_guessing_game(
+            user_param: str, headers=GuessingGameApi.headers,
+            params: str = GuessingGameApi.params,
+            translation: str = "rus") -> tuple:
         """getting the guessind word game data"""
         params["slovar"] = user_param
         params["first"] = translation
@@ -144,9 +144,10 @@ class Games:
         find_word = list(word)
         find_word = find_word[0]
         word_url = word.replace(" ", "+")
-        page = requests.get(url=ContextEnglishApi.context_english_url+word_url,
-                          headers=ContextEnglishApi.context_english_headers,
-                          cookies=ContextEnglishApi.context_english_cookies)
+        page = requests.get(
+            url=ContextEnglishApi.context_english_url+word_url,
+            headers=ContextEnglishApi.context_english_headers,
+            cookies=ContextEnglishApi.context_english_cookies)
         soup = BeautifulSoup(page.text, "html.parser")
         sentences_soup = soup.findAll('span', class_="text")
         sentences = []
