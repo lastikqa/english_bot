@@ -1,4 +1,5 @@
 from aiogram import Bot
+import time
 from config import token
 from aiogram.filters import CommandStart
 from aiogram.types import Message
@@ -8,7 +9,7 @@ from english_bot_database.english_bot_database import EnglishBotDatabase
 from aiogram import Router
 
 router = Router()
-
+time.sleep(5)
 bot = Bot(token=token)
 
 

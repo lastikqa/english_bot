@@ -1,6 +1,7 @@
 import asyncio
 from aiogram import Bot, Dispatcher
 from keyboards.keyboards import set_main_menu
+import time
 import config
 from english_bot_database.english_bot_database import EnglishBotDatabase
 from handlers import main_menu_handler, word_constructor_handler
@@ -15,7 +16,7 @@ BOT_TOKEN = config.token
 async def main():
     EnglishBotDatabase.creating_users_db()
 
-    # Инициализируем бот и диспетчер
+    time.sleep(5)
     bot = Bot(token=BOT_TOKEN)
     dp = Dispatcher()
 
