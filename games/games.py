@@ -9,7 +9,7 @@ from api.guessing_api import GuessingGameApi
 from config import datebase_name
 from api.context_english_api import ContextEnglishApi
 from api.random_chuck_jokes_api import RandomChuckJokesApi
-
+import asyncio
 database_name = datebase_name
 
 
@@ -36,7 +36,6 @@ class Games:
         """getting the guessind word game data"""
         params["slovar"] = user_param
         params["first"] = translation
-        params["rand"] = random.random()
         response = requests.get('https://hosgeldi.com/eng/guess_new.php', params=params,
                                 cookies=GuessingGameApi.cookies, headers=headers).json()
         question = response["question"]
@@ -44,46 +43,31 @@ class Games:
         variants = list(response["variants"])
         return question, answer, variants
 
-    def getting_constcuctor_games(self, translation: str = "rus", user_param: str = "v",
-                                  params: str = GuessingGameApi.params,
-                                  headers=GuessingGameApi.headers):
+    def getting_constructor_phrases(self, translation: str = "rus",
+                                  params  : bin = GuessingGameApi.params,
+                                  headers : bin = GuessingGameApi.headers) -> tuple[str, str] | list[str]:
 
+        user_param = random.choice(["g", "c", "s", "p"])
         params["slovar"] = user_param
         params["first"] = translation
-        params["rand"] = random.random()
+
         try:
             response = requests.get(GuessingGameApi.url, params=params, cookies=GuessingGameApi.cookies,
                                     headers=headers).json()
         except requests.JSONDecodeError:
-            time.sleep(5)
-
             response = requests.get(GuessingGameApi.url, params=params, cookies=GuessingGameApi.cookies,
                                     headers=headers).json()
-        question = response["answer"]
-        answer = response["question"]
-        variants = self.random_constructor_variants(answer=answer)
+
+        answer, question = self.getting_context(response["question"])
+        variants = answer.split()
+        variants = random.sample(variants, len(variants))
         return question, answer, variants
 
-    @staticmethod
-    def random_constructor_variants(answer: str) -> list:
-        """the function gets strings and splits them into lists
-        and return the lists with random words of letters of the string"""
-
-        if " " in answer:
-            answer = answer.split()
-        else:
-            answer = list(answer)
-        variants = []
-        while len(variants) != len(answer):
-            item = answer[random.randrange(0, len(answer))]
-            if item not in variants:
-                variants.append(item)
-        return variants
 
     def constructor_games(self, user_id, user_param):
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id, game=user_param)
-        question, answer, variants = self.getting_constcuctor_games(user_param=user_param)
+        question, answer,  variants = self.getting_constructor_phrases()
         database.updating_answer(user_id, answer=answer)
         database.updating_variants_for_user(user_id, variants=variants)
         database.updating_user_variants(user_id, variants)
