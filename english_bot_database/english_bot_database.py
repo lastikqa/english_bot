@@ -2,6 +2,7 @@ import sqlite3
 from config import datebase_name
 import aiosqlite
 
+
 class EnglishBotDatabase:
     def __init__(self, user_id):
         self.user_id = user_id
@@ -31,7 +32,6 @@ class EnglishBotDatabase:
 
         connect.commit()
         connect.close()
-
 
     @staticmethod
     def creating_object_user_in_db(user_id: int, first_name: str, database_name: str = database_name):

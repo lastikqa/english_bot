@@ -1,4 +1,3 @@
-import time
 from english_bot_database.english_bot_database import EnglishBotDatabase
 import requests
 from bs4 import BeautifulSoup
@@ -9,7 +8,7 @@ from api.guessing_api import GuessingGameApi
 from config import datebase_name
 from api.context_english_api import ContextEnglishApi
 from api.random_chuck_jokes_api import RandomChuckJokesApi
-import asyncio
+
 database_name = datebase_name
 
 
@@ -17,6 +16,30 @@ class Games:
     def __init__(self, user_id, user_param):
         self.user_id = user_id
         self.user_param = user_param
+
+    @staticmethod
+    def getting_context(word: str) -> tuple[str, str]:
+        """english words should be seen in its contexts. the function gets a word and return a sentence with the word
+        and translation of the sentence into russian"""
+        find_word = list(word)
+        find_word = find_word[0]
+        word_url = word.replace(" ", "+")
+        page = requests.get(
+            url=ContextEnglishApi.context_english_url + word_url,
+            headers=ContextEnglishApi.context_english_headers,
+            cookies=ContextEnglishApi.context_english_cookies)
+        soup = BeautifulSoup(page.text, "html.parser")
+        sentences_soup = soup.findAll('span', class_="text")
+        sentences = []
+        for sentence in sentences_soup:
+            sentence = sentence.text
+            sentences.append(sentence.strip())
+        sentences = sentences[31::]
+        context = random.choice(sentences)
+        while find_word not in context:
+            context = random.choice(sentences)
+        translation = ts.translate_text(context, to_language='ru')
+        return context, translation
 
     def gusesing_game(self, user_id, user_param):
         database = EnglishBotDatabase(user_id)
@@ -30,44 +53,29 @@ class Games:
 
     @staticmethod
     def getting_data_guessing_game(
-            user_param: str, headers=GuessingGameApi.headers,
+            user_param: str = random.choice(["g", "c", "s", "p"]), headers=GuessingGameApi.headers,
             params: str = GuessingGameApi.params,
-            translation: str = "rus") -> tuple:
-        """getting the guessind word game data"""
+            translation: str = "rus", constructor: bool | None = None) -> tuple:
+        """getting the guessing word game data"""
+
         params["slovar"] = user_param
         params["first"] = translation
-        response = requests.get('https://hosgeldi.com/eng/guess_new.php', params=params,
-                                cookies=GuessingGameApi.cookies, headers=headers).json()
-        question = response["question"]
-        answer = response["answer"]
-        variants = list(response["variants"])
+        response = requests.get(GuessingGameApi.url, params=params, cookies=GuessingGameApi.cookies,
+                                headers=headers).json()
+        if constructor:
+            answer, question = Games.getting_context(response["question"])
+            variants = answer.split()
+            variants = random.sample(variants, len(variants))
+        else:
+            question = response["question"]
+            answer = response["answer"]
+            variants = list(response["variants"])
         return question, answer, variants
-
-    def getting_constructor_phrases(self, translation: str = "rus",
-                                  params  : bin = GuessingGameApi.params,
-                                  headers : bin = GuessingGameApi.headers) -> tuple[str, str] | list[str]:
-
-        user_param = random.choice(["g", "c", "s", "p"])
-        params["slovar"] = user_param
-        params["first"] = translation
-
-        try:
-            response = requests.get(GuessingGameApi.url, params=params, cookies=GuessingGameApi.cookies,
-                                    headers=headers).json()
-        except requests.JSONDecodeError:
-            response = requests.get(GuessingGameApi.url, params=params, cookies=GuessingGameApi.cookies,
-                                    headers=headers).json()
-
-        answer, question = self.getting_context(response["question"])
-        variants = answer.split()
-        variants = random.sample(variants, len(variants))
-        return question, answer, variants
-
 
     def constructor_games(self, user_id, user_param):
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id, game=user_param)
-        question, answer,  variants = self.getting_constructor_phrases()
+        question, answer,  variants = self.getting_data_guessing_game(constructor=True)
         database.updating_answer(user_id, answer=answer)
         database.updating_variants_for_user(user_id, variants=variants)
         database.updating_user_variants(user_id, variants)
@@ -75,10 +83,11 @@ class Games:
         return variants, question
 
     def word_constructor(self, user_id: int) -> tuple | str:
-        user_param = random.choice(["g", "c", "s", "p"])
+        """the function splits the word into a  lists with its letters into a random order
+        that is used to make inline keyboards"""
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id, game="word_constructor")
-        question, answer, variants = self.getting_data_guessing_game(user_param=user_param, translation="turk")
+        question, answer, variants = self.getting_data_guessing_game( translation="turk")
         variants = answer
         if " " in variants:
             variants = variants.replace(" ", "_")
@@ -120,27 +129,3 @@ class Games:
         random_dictionary_values = dictionary[key]
 
         return key, random_dictionary_values
-
-    @staticmethod
-    def getting_context(word: str) -> tuple:
-        """english words should be seen in its contexts. the function gets a word and return a sentence with the word
-        and translation of the sentence into russian"""
-        find_word = list(word)
-        find_word = find_word[0]
-        word_url = word.replace(" ", "+")
-        page = requests.get(
-            url=ContextEnglishApi.context_english_url+word_url,
-            headers=ContextEnglishApi.context_english_headers,
-            cookies=ContextEnglishApi.context_english_cookies)
-        soup = BeautifulSoup(page.text, "html.parser")
-        sentences_soup = soup.findAll('span', class_="text")
-        sentences = []
-        for sentence in sentences_soup:
-            sentence = sentence.text
-            sentences.append(sentence.strip())
-        sentences = sentences[31::]
-        context = random.choice(sentences)
-        while find_word not in context:
-            context = random.choice(sentences)
-        translation = ts.translate_text(context, to_language='ru')
-        return context, translation
