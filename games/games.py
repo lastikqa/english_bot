@@ -87,7 +87,7 @@ class Games:
         that is used to make inline keyboards"""
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id, game="word_constructor")
-        question, answer, variants = self.getting_data_guessing_game( translation="turk")
+        question, answer, variants = self.getting_data_guessing_game(translation="turk")
         variants = answer
         if " " in variants:
             variants = variants.replace(" ", "_")

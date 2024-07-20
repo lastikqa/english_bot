@@ -276,3 +276,10 @@ class EnglishBotDatabase:
             if counter_user_score > user_score:
                 EnglishBotDatabase.updating_user_score(user_id=user_id, counter=counter_user_score)
             EnglishBotDatabase.updating_score_count(user_id=user_id)
+
+    def updating_user_first_name(self, user_id: int, nickname: str, database_name: str = database_name ):
+        connect = sqlite3.connect(database_name)
+        cursor = connect.cursor()
+        cursor.execute('UPDATE Users SET first_name = ? WHERE user_id = ?', (nickname, user_id))
+        connect.commit()
+        connect.close()

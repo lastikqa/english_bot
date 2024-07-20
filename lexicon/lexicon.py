@@ -33,4 +33,5 @@ Of course it is a random order of the words
 
 _Remember the more your wins in a row the higher your rating_
 
-_If u wins 3 times in a row u get 3 as your score_"""
+_If u wins 3 times in a row u get 3 as your score_
+_'!set Nickname' to set your nickname_"""

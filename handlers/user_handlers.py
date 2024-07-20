@@ -13,6 +13,7 @@ time.sleep(5)
 bot = Bot(token=token)
 
 
+
 @router.message(CommandStart())
 async def process_start_command(message: Message):
     message_id = message.message_id
@@ -20,6 +21,7 @@ async def process_start_command(message: Message):
     first_name = message.from_user.first_name
     user_id = message.from_user.id
     database = EnglishBotDatabase(user_id)
+
 
     if database.looking_for_user_in_db(user_id=user_id) is False:
         database.creating_object_user_in_db(user_id, first_name)
@@ -31,6 +33,7 @@ async def process_start_command(message: Message):
 @router.message()
 async def menu_button(message: Message):
     """the function processes menu button"""
+    database = EnglishBotDatabase(message.from_user.id)
     message_id = message.message_id
     chat_id = message.chat.id
     if message.text == "/help":
@@ -38,7 +41,10 @@ async def menu_button(message: Message):
         await message.answer(text=help_message, parse_mode="MarkdownV2", reply_markup=keyboard)
 
     if message.text == "/translation":
-        database = EnglishBotDatabase(message.from_user.id)
         translation = database.checking_user_translation(user_id=message.from_user.id)
         database.updating_user_translation(translation=translation, user_id=message.from_user.id)
+
+    if "!set" in message.text.split()[0].lower():
+        nickname = message.text.split()[1]
+        database.updating_user_first_name(user_id=message.from_user.id, nickname=nickname)
     await bot.delete_message(chat_id, message_id)
