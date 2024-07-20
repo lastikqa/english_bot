@@ -1,6 +1,5 @@
 import sqlite3
 from config import datebase_name
-import aiosqlite
 
 
 class EnglishBotDatabase:
@@ -276,10 +275,25 @@ class EnglishBotDatabase:
             if counter_user_score > user_score:
                 EnglishBotDatabase.updating_user_score(user_id=user_id, counter=counter_user_score)
             EnglishBotDatabase.updating_score_count(user_id=user_id)
-
-    def updating_user_first_name(self, user_id: int, nickname: str, database_name: str = database_name ):
+    @staticmethod
+    def updating_user_first_name(user_id: int, nickname: str, database_name: str = database_name):
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('UPDATE Users SET first_name = ? WHERE user_id = ?', (nickname, user_id))
         connect.commit()
         connect.close()
+
+    @staticmethod
+    def getting_user_scores( user_id: int, database_name: str = database_name) -> tuple:
+        """the function gets user scores to show it to user"""
+        connect = sqlite3.connect(database_name)
+        cursor = connect.cursor()
+        cursor.execute('select first_name, user_score FROM Users order by user_score limit 5')
+        user_scores = cursor.fetchall()
+        connect.close()
+        connect = sqlite3.connect(database_name)
+        cursor = connect.cursor()
+        cursor.execute('select first_name, user_score FROM Users where user_id = ?', (user_id,))
+        current_user_score = cursor.fetchone()
+        connect.close()
+        return user_scores, current_user_score
