@@ -19,6 +19,7 @@ async def process_main_menu(callback: CallbackQuery):
     user_variants = database.checking_user_variants(user_id)
     variants = database.checking_variants_for_user(user_id)
     game_status = database.checking_user_game(user_id)
+    language = database.checking_user_translation(user_id)
 
     if game_status == "v" and callback.data in user_variants:
         try:
@@ -37,8 +38,7 @@ async def process_main_menu(callback: CallbackQuery):
                 database.updating_user_answer(user_id)
                 win = (database.checking_counter_user_score(user_id=user_id)) + 1
                 database.updating_score_count(user_id=user_id, win=win)
-                user_param = "v"
-                variants, question = gamer.constructor_games(user_id=user_id, user_param=user_param)
+                variants, question = gamer.constructor_phrases(user_id=user_id, language=language)
                 keyboard = create_inline_kb(2, default_menu, *variants)
                 await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
             else:

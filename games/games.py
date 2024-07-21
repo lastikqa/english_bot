@@ -64,18 +64,24 @@ class Games:
                                 headers=headers).json()
         if constructor:
             answer, question = Games.getting_context(response["question"])
-            variants = answer.split()
-            variants = random.sample(variants, len(variants))
+            return question, answer
         else:
+            """Games.creating_phrase_for_word_constructor(question=response["question"],
+                                                                  translation=translation,
+                                                                  answer=response["answer"])"""
             question = response["question"]
             answer = response["answer"]
             variants = list(response["variants"])
-        return question, answer, variants
+            return question, answer, variants
 
-    def constructor_games(self, user_id, user_param):
+    def constructor_phrases(self, user_id: int, language, user_param: str = "v"):
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id, game=user_param)
-        question, answer,  variants = self.getting_data_guessing_game(constructor=True)
+        question, answer = self.getting_data_guessing_game(constructor=True)
+        if language == "turk":
+            question, answer = answer, question
+        variants = answer.split()
+        variants = random.sample(variants, len(variants))
         database.updating_answer(user_id, answer=answer)
         database.updating_variants_for_user(user_id, variants=variants)
         database.updating_user_variants(user_id, variants)
@@ -129,3 +135,15 @@ class Games:
         random_dictionary_values = dictionary[key]
 
         return key, random_dictionary_values
+
+    @staticmethod
+    def creating_phrase_for_word_constructor(question : str, translation : str, answer: str):
+        if translation == "turk":
+            answer, question = question, answer
+        sentence = Games.getting_context(question)
+        if translation == "rus":
+            pass
+        else:
+            pass
+
+

@@ -15,7 +15,7 @@ async def process_main_menu(callback: CallbackQuery):
     database = EnglishBotDatabase(user_id=callback.from_user.id)
     user_param = database.checking_user_game(user_id)
     gamer = Games(user_id, user_param)
-
+    language = database.checking_user_translation(user_id)
     if callback.data == "menu_button":
         database.updating_user_game(user_id)
         keyboard = create_inline_kb(1, **start_keyboard)
@@ -32,9 +32,8 @@ async def process_main_menu(callback: CallbackQuery):
         await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
 
     if callback.data == "/v":
-        user_param = "v"
         database.updating_user_answer(user_id)
-        variants, question = gamer.constructor_games(user_id=user_id, user_param=user_param)
+        variants, question = gamer.constructor_phrases(user_id=user_id, language=language)
         keyboard = create_inline_kb(2, default_menu, *variants)
         await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
 

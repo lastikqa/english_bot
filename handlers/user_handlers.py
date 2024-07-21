@@ -13,7 +13,6 @@ time.sleep(5)
 bot = Bot(token=token)
 
 
-
 @router.message(CommandStart())
 async def process_start_command(message: Message):
     message_id = message.message_id
@@ -21,7 +20,6 @@ async def process_start_command(message: Message):
     first_name = message.from_user.first_name
     user_id = message.from_user.id
     database = EnglishBotDatabase(user_id)
-
 
     if database.looking_for_user_in_db(user_id=user_id) is False:
         database.creating_object_user_in_db(user_id, first_name)
@@ -49,12 +47,12 @@ async def menu_button(message: Message):
         database.updating_user_first_name(user_id=message.from_user.id, nickname=nickname)
 
     if message.text == '/scores':
-        user_rating, user_score  = database.getting_user_scores(user_id= message.from_user.id)
+        user_rating, user_score = database.getting_user_scores(user_id=message.from_user.id)
         keyboard = create_inline_kb(1, last_btn=default_menu)
         text = "User Rating"
         for i in user_rating:
             text += "\n" + i[0] + " " + str(i[1])
-        text += "\n" + user_score[0]+ " " + str(user_score[-1]) + "\n"
+        text += "\n" + user_score[0] + " " + str(user_score[-1]) + "\n"
 
         await message.answer(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)
     await bot.delete_message(chat_id, message_id)
