@@ -54,5 +54,5 @@ async def process_guess_words(callback: CallbackQuery):
         keyboard = create_inline_kb(2, default_menu, *variants)
         await callback.message.edit_text(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
     else:
-        database.updating_user_rating(user_id, win = False)
+        database.updating_user_rating(user_id, win=False)
     await callback.answer()

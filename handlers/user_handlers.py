@@ -49,12 +49,8 @@ async def menu_button(message: Message):
         database.updating_user_first_name(user_id=message.from_user.id, nickname=nickname)
 
     if message.text == '/scores':
-        user_rating, user_score = database.getting_user_scores(user_id=message.from_user.id)
+        text = database.getting_user_scores(user_id=message.from_user.id)
         keyboard = create_inline_kb(1, last_btn=default_menu)
-        text = "User Rating"
-        for i in user_rating:
-            text += "\n" + i[0] + " " + str(i[1])
-        text += "\n" + user_score[0] + " " + str(user_score[-1]) + "\n"
         await message.answer(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)
 
     if "!setidiom" in message.text:

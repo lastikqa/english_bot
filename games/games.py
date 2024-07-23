@@ -135,11 +135,3 @@ class Games:
         random_dictionary_values = dictionary[key]
 
         return key, random_dictionary_values
-
-    @staticmethod
-    def creating_phrase_for_word_constructor(question: str, translation: str, answer: str) -> tuple[str, str]:
-        if translation == "turk":
-            answer, question = question, answer
-        sentences = Games.getting_context(question)
-
-

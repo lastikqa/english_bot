@@ -11,6 +11,7 @@ from useful_functuons.functions import replacer_escaped_symbols
 
 router = Router()
 
+
 @router.callback_query(english_idioms_filter)
 async def process_english_idioms(callback: CallbackQuery):
     user_id = callback.from_user.id

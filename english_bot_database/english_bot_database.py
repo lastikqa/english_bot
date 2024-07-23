@@ -285,7 +285,7 @@ class EnglishBotDatabase:
         connect.close()
 
     @staticmethod
-    def getting_user_scores(user_id: int, database_name: str = database_name) -> tuple:
+    def getting_user_scores(user_id: int, database_name: str = database_name) -> tuple[tuple | str] | str:
         """the function gets user scores to show it to user"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -294,4 +294,12 @@ class EnglishBotDatabase:
         cursor.execute('select first_name, user_score FROM Users where user_id = ?', (user_id,))
         current_user_score = cursor.fetchone()
         connect.close()
-        return user_scores, current_user_score
+        text = "User Rating"
+        for i in user_scores:
+            text += "\n" + i[0] + " " + str(i[1])
+        if current_user_score in user_scores:
+            return text
+        else:
+            text += "\n" + current_user_score[0] + " " + str(current_user_score[-1]) + "\n"
+
+
