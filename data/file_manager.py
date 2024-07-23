@@ -6,7 +6,7 @@ import os
 class FileManager:
 
     def __init__(self, filename):
-        self.filename = os.path.abspath(os.getcwd()+"\\data\\"+filename)
+        self.filename = os.path.dirname(os.path.abspath(__file__)) + "\\" + filename
 
     def reading_json(self):
         with open(self.filename, "r") as file:
