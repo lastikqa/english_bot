@@ -7,6 +7,8 @@ from keyboards.keyboards import create_inline_kb
 from lexicon.lexicon import start_keyboard, help_message, default_menu
 from english_bot_database.english_bot_database import EnglishBotDatabase
 from aiogram import Router
+from data.file_manager import FileManager
+
 
 router = Router()
 time.sleep(5)
@@ -53,6 +55,10 @@ async def menu_button(message: Message):
         for i in user_rating:
             text += "\n" + i[0] + " " + str(i[1])
         text += "\n" + user_score[0] + " " + str(user_score[-1]) + "\n"
-
         await message.answer(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)
+
+    if "!setidiom" in message.text:
+        file = FileManager(filename="english_idioms_data.json")
+        file.updating_json(message.text)
+
     await bot.delete_message(chat_id, message_id)
