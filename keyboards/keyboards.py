@@ -24,12 +24,13 @@ def create_inline_kb(width: int,
                 text=text,
                 callback_data=button))
     kb_builder.row(*buttons, width=width)
-    if last_btn :
+    if last_btn:
         kb_builder.row(InlineKeyboardButton(
             text=last_btn,
             callback_data='menu_button'
         ))
     return kb_builder.as_markup()
+
 
 async def set_main_menu(bot: Bot):
     main_menu_commands = [

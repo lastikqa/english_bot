@@ -1,15 +1,19 @@
 start_keyboard = {"Guess Word": "guess_word", "Word Constructor": "word_constructor", "Phrase Constructor": "/v",
-                  "Abnormal Verbs": "abnormal_verbs", "Phrasal Verbs": "phrasal_verbs", "Chuck Norris": "/chuck"}
+                  "Abnormal Verbs": "abnormal_verbs", "Phrasal Verbs": "phrasal_verbs", "English Idioms": '/idioms',
+                  "Chuck Norris": "/chuck"}
+
 guess_word_keyboard = {"Verbs": "/g", "Nouns": "/s", "Numbers": "/c", "Adjectives": "/p",
                        "Pronouns, prepositions, conjunction": "/m"}
+
 menu_keyboard = {"/help": "to see some information about the bot", "/translation":
                 "to switch the current translation ", "/scores": " to see user scores"}
+
 default_menu = "Menu Button"
 
 chuck_keyboard = {"Next": "/chuck", "Translate": "/translation"}
 abnormal_verbs_keyboard = {"Next Verb": "abnormal_verbs"}
 phrasal_verbs_keyboard = {"Next Verb": "phrasal_verbs"}
-
+english_idioms_keyboard ={"Next Idiom": "/idioms"}
 
 help_message = r"""**_Guess Word game_**
 

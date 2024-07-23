@@ -4,8 +4,7 @@ from lexicon.lexicon import default_menu, phrasal_verbs_keyboard
 from aiogram.types import CallbackQuery
 from games.games import Games
 from english_bot_database.english_bot_database import EnglishBotDatabase
-from data.phrasal_verbs import phrasal_verbs
-from data.phrasal_verbs_key_list import phrasal_verbs_key_list
+from data.file_manager import FileManager
 from filters.phrasal_verbs_filter import phrasal_verbs_filter
 from useful_functuons.functions import replacer_escaped_symbols
 
@@ -18,9 +17,11 @@ async def process_phrasal_verbs(callback: CallbackQuery):
     database = EnglishBotDatabase(user_id=callback.from_user.id)
     user_param = database.checking_user_game(user_id)
     gamer = Games(user_id, user_param)
+    filename = "phrasal_verbs.json"
+    file = FileManager(filename)
 
     if callback.data == "phrasal_verbs":
-        key, values = gamer.getting_dictionaries_data(dictionary=phrasal_verbs, key_list=phrasal_verbs_key_list)
+        key, values = file.getting_random_object_from_json()
         should_be_escaped = gamer.getting_context(word=key)
         should_be_escaped = list(should_be_escaped)
         should_be_escaped.append(values[0])
