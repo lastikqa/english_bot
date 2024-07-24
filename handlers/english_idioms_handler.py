@@ -16,13 +16,10 @@ router = Router()
 async def process_english_idioms(callback: CallbackQuery):
     user_id = callback.from_user.id
     database = EnglishBotDatabase(user_id=callback.from_user.id)
-    user_param = database.checking_user_game(user_id)
-    gamer = Games(user_id, user_param)
-    filename = "english_idioms_data.json"
-    file = FileManager(filename)
+    gamer = Games(user_id, data="english_idioms_data.json")
 
     if callback.data == "/idioms":
-        key, values = file.getting_random_object_from_json()
+        key, values = gamer.game_data.getting_random_object_from_json()
         should_be_escaped = gamer.getting_context(word=key)
         should_be_escaped = list(should_be_escaped)
         should_be_escaped.append(values)

@@ -4,18 +4,17 @@ from bs4 import BeautifulSoup
 import random
 from gtts import gTTS
 import translators as ts
-from api.guessing_api import GuessingGameApi
 from config import datebase_name
 from api.context_english_api import ContextEnglishApi
 from api.random_chuck_jokes_api import RandomChuckJokesApi
-
+from data.file_manager import FileManager
 database_name = datebase_name
 
 
 class Games:
-    def __init__(self, user_id, user_param):
+    def __init__(self, user_id, data):
         self.user_id = user_id
-        self.user_param = user_param
+        self.game_data = FileManager(data)
 
     @staticmethod
     def getting_context(word: str) -> tuple[str, str]:
@@ -41,44 +40,51 @@ class Games:
         translation = ts.translate_text(context, to_language='ru')
         return context, translation
 
-    def gusesing_game(self, user_id, user_param):
+    def gusesing_game(self, user_id):
         database = EnglishBotDatabase(user_id)
-        database.updating_user_game(user_id=user_id, game=user_param)
-        translation = database.checking_user_translation(user_id=user_id)
-        question, answer, variants = self.getting_data_guessing_game(translation=translation, user_param=user_param)
+        database.checking_user_game(user_id=user_id)
+        language = database.checking_user_translation(user_id=self.user_id)
+        answer, variants = self.getting_data_guessing_game()
+        question = ts.translate_text(answer, to_language='ru')
+        if language == "en":
+            variants = [ts.translate_text(i, to_language="ru") for i in variants]
+            answer, question = question, answer
         database.updating_answer(answer=answer, user_id=user_id)
         database.updating_variants_for_user(user_id=user_id, variants=variants)
         database.updating_question(user_id=user_id, question=question)
+
         return question, variants
 
-    @staticmethod
-    def getting_data_guessing_game(
-            user_param: str = random.choice(["g", "c", "s", "p"]), headers=GuessingGameApi.headers,
-            params: str = GuessingGameApi.params,
-            translation: str = "rus", constructor: bool | None = None) -> tuple:
-        """getting the guessing word game data"""
+    def getting_data_guessing_game(self, constructor=None):
+        parts_of_speech = self.game_data.reading_json()
 
-        params["slovar"] = user_param
-        params["first"] = translation
-        response = requests.get(GuessingGameApi.url, params=params, cookies=GuessingGameApi.cookies,
-                                headers=headers).json()
-        if constructor:
-            answer, question = Games.getting_context(response["question"])
+        if constructor == "phrase":
+            parts_of_speech = self.game_data.getting_random_object_from_json()
+            word = random.choice([i for i in parts_of_speech[1]])
+            answer, question = Games.getting_context(word)
             return question, answer
-        else:
-            """Games.creating_phrase_for_word_constructor(question=response["question"],
-                                                                  translation=translation,
-                                                                  answer=response["answer"])"""
-            question = response["question"]
-            answer = response["answer"]
-            variants = list(response["variants"])
-            return question, answer, variants
 
-    def constructor_phrases(self, user_id: int, language, user_param: str = "v"):
+        elif constructor == 'word':
+            parts_of_speech = self.game_data.getting_random_object_from_json()
+            word = random.choice([i for i in parts_of_speech[1]])
+            return word
+
+        else:
+            user_game = EnglishBotDatabase.checking_user_game(user_id=self.user_id)
+            variants_of_words = []
+            list_of_words = [i for i in parts_of_speech[user_game]]
+            for _ in range(9):
+                variants_of_words.append(random.choice(list_of_words))
+
+            answer = random.choice(variants_of_words)
+
+        return answer, variants_of_words
+
+    def constructor_phrases(self, user_id: int, language):
         database = EnglishBotDatabase(user_id)
-        database.updating_user_game(user_id, game=user_param)
-        question, answer = self.getting_data_guessing_game(constructor=True)
-        if language == "turk":
+        #database.updating_user_game(user_id)
+        question, answer = self.getting_data_guessing_game(constructor="phrase")
+        if language == "en":
             question, answer = answer, question
         variants = answer.split()
         variants = random.sample(variants, len(variants))
@@ -93,7 +99,8 @@ class Games:
         that is used to make inline keyboards"""
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id, game="word_constructor")
-        question, answer, variants = self.getting_data_guessing_game(translation="turk")
+        answer = self.getting_data_guessing_game(constructor="word")
+        question = ts.translate_text(answer, to_language="ru")
         variants = answer
         if " " in variants:
             variants = variants.replace(" ", "_")
@@ -127,11 +134,3 @@ class Games:
         audio.save(f"{user_id}.mp3")
         name_audio = f"{user_id}.mp3"
         return name_audio
-
-    @staticmethod
-    def getting_dictionaries_data(dictionary: dict, key_list: list) -> tuple:
-        """I made a list with keys of my dictionaries  and get random item of my list as a key to the dicts """
-        key = random.choice(key_list)
-        random_dictionary_values = dictionary[key]
-
-        return key, random_dictionary_values

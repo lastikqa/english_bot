@@ -44,7 +44,7 @@ async def menu_button(message: Message):
         translation = database.checking_user_translation(user_id=message.from_user.id)
         database.updating_user_translation(translation=translation, user_id=message.from_user.id)
 
-    if "!set" in message.text.split()[0].lower():
+    if "!setnicname" in message.text.split()[0].lower():
         nickname = message.text.split()[1]
         database.updating_user_first_name(user_id=message.from_user.id, nickname=nickname)
 

@@ -15,14 +15,11 @@ router = Router()
 @router.callback_query(abnormal_verbs_filter)
 async def process_abnormal_verbs(callback: CallbackQuery):
     user_id = callback.from_user.id
-    database = EnglishBotDatabase(user_id=callback.from_user.id)
-    user_param = database.checking_user_game(user_id)
-    gamer = Games(user_id, user_param)
-    filename ="abnormal_verbs.json"
+    gamer = Games(user_id, data="abnormal_verbs.json")
 
     if callback.data == "abnormal_verbs":
-        file = FileManager(filename)
-        key, values = file.getting_random_object_from_json()
+
+        key, values = gamer.game_data.getting_random_object_from_json()
         sentences = gamer.getting_context(values[0])
         sentences = replacer_escaped_symbols(list(sentences))
 

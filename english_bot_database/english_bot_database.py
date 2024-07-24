@@ -96,10 +96,10 @@ class EnglishBotDatabase:
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('SELECT question FROM Users WHERE user_id=?', (user_id,))
-        queistion = cursor.fetchone()
+        question = cursor.fetchone()
         connect.close()
         try:
-            return queistion[0]
+            return question[0]
         except TypeError:
             return ""
 
@@ -118,10 +118,10 @@ class EnglishBotDatabase:
         rus means english to russian. turk means russian to english.
         do not blame me it is the api  I just use that"""
 
-        if translation == "rus":
-            translation = "turk"
-        elif translation == "turk":
-            translation = "rus"
+        if translation == "ru":
+            translation = "en"
+        elif translation == "en":
+            translation = "ru"
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('UPDATE Users SET translation = ? WHERE user_id = ?', (translation, user_id))
@@ -301,5 +301,3 @@ class EnglishBotDatabase:
             return text
         else:
             text += "\n" + current_user_score[0] + " " + str(current_user_score[-1]) + "\n"
-
-

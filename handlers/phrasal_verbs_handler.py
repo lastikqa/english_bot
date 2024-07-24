@@ -14,14 +14,10 @@ router = Router()
 @router.callback_query(phrasal_verbs_filter)
 async def process_phrasal_verbs(callback: CallbackQuery):
     user_id = callback.from_user.id
-    database = EnglishBotDatabase(user_id=callback.from_user.id)
-    user_param = database.checking_user_game(user_id)
-    gamer = Games(user_id, user_param)
-    filename = "phrasal_verbs.json"
-    file = FileManager(filename)
+    gamer = Games(user_id, data="phrasal_verbs.json")
 
     if callback.data == "phrasal_verbs":
-        key, values = file.getting_random_object_from_json()
+        key, values = gamer.game_data.getting_random_object_from_json()
         should_be_escaped = gamer.getting_context(word=key)
         should_be_escaped = list(should_be_escaped)
         should_be_escaped.append(values[0])
