@@ -3,8 +3,6 @@ from keyboards.keyboards import create_inline_kb
 from lexicon.lexicon import default_menu, english_idioms_keyboard
 from aiogram.types import CallbackQuery
 from games.games import Games
-from english_bot_database.english_bot_database import EnglishBotDatabase
-from data.file_manager import FileManager
 from filters.english_idioms_filter import english_idioms_filter
 from useful_functuons.functions import replacer_escaped_symbols
 
@@ -15,7 +13,6 @@ router = Router()
 @router.callback_query(english_idioms_filter)
 async def process_english_idioms(callback: CallbackQuery):
     user_id = callback.from_user.id
-    database = EnglishBotDatabase(user_id=callback.from_user.id)
     gamer = Games(user_id, data="english_idioms_data.json")
 
     if callback.data == "/idioms":

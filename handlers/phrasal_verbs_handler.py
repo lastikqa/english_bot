@@ -3,8 +3,6 @@ from keyboards.keyboards import create_inline_kb
 from lexicon.lexicon import default_menu, phrasal_verbs_keyboard
 from aiogram.types import CallbackQuery
 from games.games import Games
-from english_bot_database.english_bot_database import EnglishBotDatabase
-from data.file_manager import FileManager
 from filters.phrasal_verbs_filter import phrasal_verbs_filter
 from useful_functuons.functions import replacer_escaped_symbols
 

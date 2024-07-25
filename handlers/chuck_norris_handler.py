@@ -13,7 +13,6 @@ router = Router()
 async def process_main_menu(callback: CallbackQuery):
     user_id = callback.from_user.id
     database = EnglishBotDatabase(user_id=callback.from_user.id)
-    user_param = database.checking_user_game(user_id)
     gamer = Games(user_id, data="_")
     answer = database.checking_answer(user_id)
 

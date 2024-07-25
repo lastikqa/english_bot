@@ -3,8 +3,6 @@ from keyboards.keyboards import create_inline_kb
 from lexicon.lexicon import default_menu, abnormal_verbs_keyboard
 from aiogram.types import CallbackQuery
 from games.games import Games
-from english_bot_database.english_bot_database import EnglishBotDatabase
-from data.file_manager import FileManager
 from filters.abnormal_verbs_filter import abnormal_verbs_filter
 from useful_functuons.functions import replacer_escaped_symbols
 
@@ -29,4 +27,3 @@ async def process_abnormal_verbs(callback: CallbackQuery):
         keyboard = create_inline_kb(2, last_btn=default_menu, **abnormal_verbs_keyboard)
         await callback.message.edit_text(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)
     await callback.answer()
-

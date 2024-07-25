@@ -82,7 +82,6 @@ class Games:
 
     def constructor_phrases(self, user_id: int, language):
         database = EnglishBotDatabase(user_id)
-        #database.updating_user_game(user_id)
         question, answer = self.getting_data_guessing_game(constructor="phrase")
         if language == "en":
             question, answer = answer, question
