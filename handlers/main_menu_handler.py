@@ -32,7 +32,7 @@ async def process_main_menu(callback: CallbackQuery):
         await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
 
     if callback.data == "/v":
-        database.updating_user_game(user_id,game="v")
+        database.updating_user_game(user_id, game="v")
         database.updating_user_answer(user_id)
         variants, question = gamer.constructor_phrases(user_id=user_id, language=language)
         keyboard = create_inline_kb(2, default_menu, *variants)

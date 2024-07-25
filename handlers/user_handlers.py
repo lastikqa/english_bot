@@ -11,7 +11,7 @@ from data.file_manager import FileManager
 
 
 router = Router()
-time.sleep(5)
+time.sleep(2)
 bot = Bot(token=token)
 
 
