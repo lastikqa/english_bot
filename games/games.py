@@ -45,7 +45,7 @@ class Games:
         database.checking_user_game(user_id=user_id)
         translation = database.checking_user_translation(user_id=self.user_id)
         user_language = database.checking_user_language(user_id=self.user_id)
-        answer, variants = self.getting_data_guessing_game()
+        answer, variants, level = self.getting_data_guessing_game()
         question = ts.translate_text(answer, to_language=user_language)
         if translation == "en":
             variants = [ts.translate_text(i, to_language=user_language) for i in variants]
@@ -54,7 +54,7 @@ class Games:
         database.updating_variants_for_user(user_id=user_id, variants=variants)
         database.updating_question(user_id=user_id, question=question)
 
-        return question, variants
+        return question, variants, level
 
     def getting_data_guessing_game(self, constructor=None):
         parts_of_speech = self.game_data.reading_json()
@@ -79,7 +79,8 @@ class Games:
 
             answer = random.choice(variants_of_words)
 
-        return answer, variants_of_words
+            level = parts_of_speech[user_game][answer]["level"]
+        return answer, variants_of_words, level
 
     def constructor_phrases(self, user_id: int, language):
         database = EnglishBotDatabase(user_id)

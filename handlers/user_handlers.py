@@ -41,7 +41,7 @@ async def menu_button(message: Message):
 
     if message.text == "/help":
         keyboard = create_inline_kb(1, last_btn=default_menu)
-        await message.edit_text(text=help_message, parse_mode="MarkdownV2", reply_markup=keyboard)
+        await message.answer(text=help_message, parse_mode="MarkdownV2", reply_markup=keyboard)
 
     if message.text == "/translation":
         translation = database.checking_user_translation(user_id=message.from_user.id)
