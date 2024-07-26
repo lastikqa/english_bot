@@ -66,9 +66,8 @@ async def menu_button(message: Message):
 
     if "!setlanguage" in message.text:
         new_language = message.text.split()[1]
-        if new_language not in languages:
-            pass
-        database.updating_user_translation(user_id=user_id, translation="en")
-        database.updating_user_language(user_id=user_id, language=new_language)
+        if new_language in languages:
+            database.updating_user_translation(user_id=user_id, translation="en")
+            database.updating_user_language(user_id=user_id, language=new_language)
 
     await bot.delete_message(chat_id, message_id)
