@@ -35,7 +35,7 @@ async def process_start_command(message: Message):
 async def menu_button(message: Message):
     """the function processes menu button"""
     user_id = message.from_user.id
-    database = EnglishBotDatabase(message.from_user.id)
+    database = EnglishBotDatabase(user_id)
     message_id = message.message_id
     chat_id = message.chat.id
 

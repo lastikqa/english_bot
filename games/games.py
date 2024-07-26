@@ -124,13 +124,6 @@ class Games:
         return joke
 
     @staticmethod
-    def getting_translation(user_id: int) -> str:
-        database = EnglishBotDatabase(user_id)
-        answer = database.checking_answer(user_id)
-        translation = ts.translate_text(answer, to_language='ru')
-        return translation
-
-    @staticmethod
     def getting_audio(user_id, text: str) -> str:
         audio = gTTS(text=text, lang="en", slow=False)
         audio.save(f"{user_id}.mp3")
