@@ -21,7 +21,7 @@ async def process_guess_words(callback: CallbackQuery):
         database.updating_user_game(user_id=user_id, game="verbs")
         question, variants = game.gusesing_game(user_id)
         keyboard = create_inline_kb(2, default_menu, *variants)
-        await callback.message.edit_text(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
+        await callback.message.answer(text=f"Whats the right translation for '{question}'?", reply_markup=keyboard)
 
     if callback.data == "/nouns":
         database.updating_user_game(user_id=user_id, game="nouns")

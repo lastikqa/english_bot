@@ -36,6 +36,7 @@ class FileManager:
         if "!setidiom" in text:
             text = text.replace("!setidiom", "")
             text = text.split(":")
-            json_object[str(text[0].strip())] = str(text[1].strip())
+            if len(text) == 2:
+                json_object[str(text[0].strip())] = str(text[1].strip())
 
         self.writing_json(json_object)
