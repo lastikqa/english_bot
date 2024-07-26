@@ -44,5 +44,5 @@ _\!setnicname 'Nickname' to set your nickname_
 
 _\!setidiom 'stir up a hornet's nest: provoke trouble' to add idioms_
 
-_\!setlanguage 'de' - German language. use language codes_
+_\!setlanguage 'de'  German language. use language codes_
 """
