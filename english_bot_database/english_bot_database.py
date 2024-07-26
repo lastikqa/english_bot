@@ -18,6 +18,7 @@ class EnglishBotDatabase:
                     user_id INTEGER,
                     first_name TEXT,
                     translation TEXT,
+                    user_language TEXT,
                     game TEXT,
                     question TEXT,
                     answer TEXT,
@@ -37,11 +38,11 @@ class EnglishBotDatabase:
         """Create a new object in db. the function gets user id from telegram and username"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
-        cursor.execute('INSERT INTO Users (user_id, first_name,  translation, game, '
-                       'question,answer, user_answer, variants, user_variants, '
+        cursor.execute('INSERT INTO Users (user_id, first_name,  translation, user_language, game, '
+                       'question, answer, user_answer, variants, user_variants, '
                        'user_score, counter_user_score) '
-                       'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)',
-                       (user_id, first_name, "rus", "", "", "", "", "", "", 0, 0))
+                       'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                       (user_id, first_name, "en", "ru", "", "", "", "", "", "", 0, 0))
         connect.commit()
         connect.close()
 
@@ -114,14 +115,7 @@ class EnglishBotDatabase:
 
     @staticmethod
     def updating_user_translation(translation: str, user_id: int, database_name: str = database_name):
-        """the function updates user translation
-        rus means english to russian. turk means russian to english.
-        do not blame me it is the api  I just use that"""
-
-        if translation == "ru":
-            translation = "en"
-        elif translation == "en":
-            translation = "ru"
+        """the function updates user translation"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute('UPDATE Users SET translation = ? WHERE user_id = ?', (translation, user_id))
@@ -301,3 +295,22 @@ class EnglishBotDatabase:
             return text
         else:
             text += "\n" + current_user_score[0] + " " + str(current_user_score[-1]) + "\n"
+
+    @staticmethod
+    def updating_user_language(user_id: int, language: str, database_name: str = database_name):
+        """the function updates user language"""
+        connect = sqlite3.connect(database_name)
+        cursor = connect.cursor()
+        cursor.execute('UPDATE Users SET user_language = ? WHERE user_id = ?', (language, user_id))
+        connect.commit()
+        connect.close()
+
+    @staticmethod
+    def checking_user_language(user_id: int, database_name: str = database_name) -> int:
+        """the function check user language"""
+        connect = sqlite3.connect(database_name)
+        cursor = connect.cursor()
+        cursor.execute('SELECT user_language FROM Users WHERE user_id=?', (user_id,))
+        user_language = cursor.fetchone()
+        connect.close()
+        return user_language[0]

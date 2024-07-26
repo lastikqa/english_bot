@@ -16,8 +16,7 @@ class Games:
         self.user_id = user_id
         self.game_data = FileManager(data)
 
-    @staticmethod
-    def getting_context(word: str) -> tuple[str, str]:
+    def getting_context(self, word: str) -> tuple[str, str]:
         """english words should be seen in its contexts. the function gets a word and return a sentence with the word
         and translation of the sentence into russian"""
         find_word = list(word)
@@ -37,17 +36,19 @@ class Games:
         context = random.choice(sentences)
         while find_word not in context:
             context = random.choice(sentences)
-        translation = ts.translate_text(context, to_language='ru')
+        translation = self.getting_absolute_translation()
+        translation = ts.translate_text(context, to_language=translation)
         return context, translation
 
     def gusesing_game(self, user_id):
         database = EnglishBotDatabase(user_id)
         database.checking_user_game(user_id=user_id)
-        language = database.checking_user_translation(user_id=self.user_id)
+        translation = database.checking_user_translation(user_id=self.user_id)
+        user_language = database.checking_user_language(user_id=self.user_id)
         answer, variants = self.getting_data_guessing_game()
-        question = ts.translate_text(answer, to_language='ru')
-        if language == "en":
-            variants = [ts.translate_text(i, to_language="ru") for i in variants]
+        question = ts.translate_text(answer, to_language=user_language)
+        if translation == "en":
+            variants = [ts.translate_text(i, to_language=user_language) for i in variants]
             answer, question = question, answer
         database.updating_answer(answer=answer, user_id=user_id)
         database.updating_variants_for_user(user_id=user_id, variants=variants)
@@ -61,7 +62,7 @@ class Games:
         if constructor == "phrase":
             parts_of_speech = self.game_data.getting_random_object_from_json()
             word = random.choice([i for i in parts_of_speech[1]])
-            answer, question = Games.getting_context(word)
+            answer, question = self.getting_context(word)
             return question, answer
 
         elif constructor == 'word':
@@ -99,7 +100,8 @@ class Games:
         database = EnglishBotDatabase(user_id)
         database.updating_user_game(user_id, game="word_constructor")
         answer = self.getting_data_guessing_game(constructor="word")
-        question = ts.translate_text(answer, to_language="ru")
+        translation = self.getting_absolute_translation()
+        question = ts.translate_text(answer, to_language=translation)
         variants = answer
         if " " in variants:
             variants = variants.replace(" ", "_")
@@ -133,3 +135,11 @@ class Games:
         audio.save(f"{user_id}.mp3")
         name_audio = f"{user_id}.mp3"
         return name_audio
+
+    def getting_absolute_translation(self):
+        translation = (EnglishBotDatabase.checking_user_translation(user_id=self.user_id),
+                       EnglishBotDatabase.checking_user_language(user_id=self.user_id))
+        for i in translation:
+            if i != 'en':
+                translation = i
+        return translation

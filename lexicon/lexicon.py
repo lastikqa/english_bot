@@ -40,7 +40,9 @@ _Remember the more your wins in a row the higher your rating_
 
 _If u wins 3 times in a row u get 3 as your score_
 
-_\!set 'Nickname' to set your nickname_
+_\!setnicname 'Nickname' to set your nickname_
 
-_\!setidiom 'stir up a hornet's nest: provoke trouble' to add idioms
+_\!setidiom 'stir up a hornet's nest: provoke trouble' to add idioms_
+
+_\!setlanguage 'de' - German language. use language codes_
 """

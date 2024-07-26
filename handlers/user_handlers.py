@@ -5,6 +5,7 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message
 from keyboards.keyboards import create_inline_kb
 from lexicon.lexicon import start_keyboard, help_message, default_menu
+from lexicon.user_handlers_lexicon import languages
 from english_bot_database.english_bot_database import EnglishBotDatabase
 from aiogram import Router
 from data.file_manager import FileManager
@@ -33,16 +34,22 @@ async def process_start_command(message: Message):
 @router.message()
 async def menu_button(message: Message):
     """the function processes menu button"""
+    user_id = message.from_user.id
     database = EnglishBotDatabase(message.from_user.id)
     message_id = message.message_id
     chat_id = message.chat.id
+
     if message.text == "/help":
         keyboard = create_inline_kb(1, last_btn=default_menu)
         await message.answer(text=help_message, parse_mode="MarkdownV2", reply_markup=keyboard)
 
     if message.text == "/translation":
         translation = database.checking_user_translation(user_id=message.from_user.id)
+        language = database.checking_user_language(user_id=user_id)
+
+        translation, language = language, translation
         database.updating_user_translation(translation=translation, user_id=message.from_user.id)
+        database.updating_user_language(language=language, user_id=user_id)
 
     if "!setnicname" in message.text.split()[0].lower():
         nickname = message.text.split()[1]
@@ -56,5 +63,12 @@ async def menu_button(message: Message):
     if "!setidiom" in message.text:
         file = FileManager(filename="english_idioms_data.json")
         file.updating_json(message.text)
+
+    if "!setlanguage" in message.text:
+        new_language = message.text.split()[1]
+        if new_language not in languages:
+            pass
+        database.updating_user_translation(user_id=user_id, translation="en")
+        database.updating_user_language(user_id=user_id, language=new_language)
 
     await bot.delete_message(chat_id, message_id)
