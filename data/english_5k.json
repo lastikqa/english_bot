@@ -1900,7 +1900,7 @@
                               "level": "B1"
                     },
                     "before": {
-                              "level": "adv.A2"
+                              "level": "A2"
                     },
                     "clean": {
                               "level": "A1"
@@ -1942,7 +1942,7 @@
                               "level": "B2"
                     },
                     "climb": {
-                              "level": "n.B1"
+                              "level": "B1"
                     },
                     "believe": {
                               "level": "A1"
@@ -1957,7 +1957,7 @@
                               "level": "A2"
                     },
                     "close2": {
-                              "level": "adv.B1"
+                              "level": "B1"
                     },
                     "below": {
                               "level": "A1"
@@ -2407,7 +2407,7 @@
                               "level": "B2"
                     },
                     "double": {
-                              "level": "adv."
+                              "level": "A2"
                     },
                     "control": {
                               "level": "A2"
@@ -2737,7 +2737,7 @@
                               "level": "A2"
                     },
                     "farm": {
-                              "level": "v.A2"
+                              "level": "A2"
                     },
                     "else": {
                               "level": "A1"
@@ -3414,7 +3414,7 @@
                     "naturally": {
                               "level": "B1"
                     },
-                    "o\u0432\u0402\u2122clock": {
+                    "clock": {
                               "level": "A1"
                     },
                     "pace": {
@@ -3634,7 +3634,7 @@
                               "level": "B2"
                     },
                     "outside": {
-                              "level": "noun.,"
+                              "level": "A1"
                     },
                     "personally": {
                               "level": "B1"
@@ -3907,7 +3907,7 @@
                               "level": "A1"
                     },
                     "raise": {
-                              "level": "n.B1"
+                              "level": "B1"
                     },
                     "rely": {
                               "level": "B2"
@@ -3949,7 +3949,7 @@
                               "level": "A2"
                     },
                     "rate": {
-                              "level": "v.B2"
+                              "level": "B2"
                     },
                     "rent": {
                               "level": "B1"
@@ -4192,7 +4192,7 @@
                               "level": "A2"
                     },
                     "ring2": {
-                              "level": "n.B1"
+                              "level": "B1"
                     },
                     "rise": {
                               "level": "B2"
@@ -5238,7 +5238,7 @@
                               "level": "B1"
                     },
                     "before": {
-                              "level": "adv.A2"
+                              "level": "A2"
                     },
                     "clearly": {
                               "level": "A2"
@@ -5246,8 +5246,8 @@
                     "behind": {
                               "level": "A1"
                     },
-                    "close2": {
-                              "level": "adv.B1"
+                    "close": {
+                              "level": "B1"
                     },
                     "below": {
                               "level": "A1"
@@ -5313,7 +5313,7 @@
                               "level": "B1"
                     },
                     "double": {
-                              "level": "adv."
+                              "level": "A2"
                     },
                     "down": {
                               "level": "A1"
@@ -5558,7 +5558,7 @@
                     "naturally": {
                               "level": "B1"
                     },
-                    "o\u0432\u0402\u2122clock": {
+                    "clock": {
                               "level": "A1"
                     },
                     "near": {
@@ -5667,7 +5667,7 @@
                               "level": "B1"
                     },
                     "outside": {
-                              "level": "noun.,"
+                              "level": "A1,"
                     },
                     "personally": {
                               "level": "B1"
@@ -5963,7 +5963,7 @@
                               "level": "A2"
                     },
                     "before": {
-                              "level": "adv.A2"
+                              "level": "A2"
                     },
                     "behind": {
                               "level": "A1"
@@ -6050,7 +6050,7 @@
                               "level": "A1"
                     },
                     "outside": {
-                              "level": "noun.,"
+                              "level": "A1,"
                     },
                     "over": {
                               "level": "A1"
@@ -8251,7 +8251,7 @@
                               "level": "C1"
                     },
                     "pharmacy": {
-                              "level": "n.B2"
+                              "level": "B2"
                     },
                     "margin": {
                               "level": "B2"
@@ -8799,7 +8799,7 @@
                     "rebellion": {
                               "level": "C1"
                     },
-                    "r\u0413\u00a9sum\u0413\u00a9": {
+                    "sum": {
                               "level": "B2"
                     },
                     "settlement": {
@@ -9238,7 +9238,7 @@
                               "level": "C1"
                     },
                     "suburb": {
-                              "level": "n.B2"
+                              "level": "B2"
                     },
                     "territory": {
                               "level": "B2"
@@ -9334,7 +9334,7 @@
                               "level": "C1"
                     },
                     "theft": {
-                              "level": "n.B2"
+                              "level": "B2"
                     },
                     "spine": {
                               "level": "C1"
@@ -9577,7 +9577,7 @@
                               "level": "B2"
                     },
                     "wrist": {
-                              "level": "n.B2"
+                              "level": "B2"
                     },
                     "ward": {
                               "level": "C1"
@@ -10075,7 +10075,7 @@
                               "level": "B2"
                     },
                     "climb": {
-                              "level": "n.B1"
+                              "level": "B1"
                     },
                     "bridge": {
                               "level": "A2"
@@ -10582,7 +10582,7 @@
                               "level": "B2"
                     },
                     "complex": {
-                              "level": "n.B2"
+                              "level": "B2"
                     },
                     "brain": {
                               "level": "A2"
@@ -10942,7 +10942,7 @@
                               "level": "B2"
                     },
                     "double": {
-                              "level": "adv."
+                              "level": "A1"
                     },
                     "contribution": {
                               "level": "B2"
@@ -11347,7 +11347,7 @@
                               "level": "B2"
                     },
                     "fish": {
-                              "level": "v.A2"
+                              "level": "A2"
                     },
                     "fact": {
                               "level": "A1"
@@ -11455,7 +11455,7 @@
                               "level": "B1"
                     },
                     "farm": {
-                              "level": "v.A2"
+                              "level": "A2"
                     },
                     "flower": {
                               "level": "A1"
@@ -11512,7 +11512,7 @@
                               "level": "A1"
                     },
                     "fat": {
-                              "level": "n.A2"
+                              "level": "A2"
                     },
                     "father": {
                               "level": "A1"
@@ -12247,7 +12247,7 @@
                               "level": "A2"
                     },
                     "light": {
-                              "level": "n.,"
+                              "level": "A1,"
                     },
                     "map": {
                               "level": "B2"
@@ -12334,7 +12334,7 @@
                               "level": "A1"
                     },
                     "match": {
-                              "level": "n.,"
+                              "level": "A1,"
                     },
                     "label": {
                               "level": "B1"
@@ -13048,7 +13048,7 @@
                               "level": "B2"
                     },
                     "original": {
-                              "level": "n.B1"
+                              "level": "B1"
                     },
                     "percent": {
                               "level": "A2"
@@ -13144,7 +13144,7 @@
                               "level": "B2"
                     },
                     "outside": {
-                              "level": "noun.,"
+                              "level": "A1,"
                     },
                     "nail": {
                               "level": "B1"
@@ -13564,7 +13564,7 @@
                               "level": "A2"
                     },
                     "raise": {
-                              "level": "n.B1"
+                              "level": "B1"
                     },
                     "politics": {
                               "level": "B1"
@@ -13606,7 +13606,7 @@
                               "level": "A1"
                     },
                     "rate": {
-                              "level": "v.B2"
+                              "level": "B2"
                     },
                     "rent": {
                               "level": "B1"
@@ -13996,7 +13996,7 @@
                               "level": "A2"
                     },
                     "ring2": {
-                              "level": "n.B1"
+                              "level": "B1"
                     },
                     "season": {
                               "level": "A2"
@@ -16515,7 +16515,7 @@
                               "level": "B2"
                     },
                     "academic": {
-                              "level": "adj.B1"
+                              "level": "B1"
                     },
                     "automatic": {
                               "level": "B1"
@@ -16661,8 +16661,8 @@
                     "bright": {
                               "level": "A2"
                     },
-                    "close2": {
-                              "level": "adv.B1"
+                    "close": {
+                              "level": "B1"
                     },
                     "brilliant": {
                               "level": "A2"
@@ -16779,7 +16779,7 @@
                               "level": "B2"
                     },
                     "complex": {
-                              "level": "n.B2"
+                              "level": "B2"
                     },
                     "careful": {
                               "level": "A2"
@@ -16911,7 +16911,7 @@
                               "level": "B2"
                     },
                     "double": {
-                              "level": "adv."
+                              "level": "A2"
                     },
                     "curved": {
                               "level": "B2"
@@ -17160,7 +17160,7 @@
                               "level": "B1"
                     },
                     "fat": {
-                              "level": "n.A2"
+                              "level": "A2"
                     },
                     "emotional": {
                               "level": "B2"
@@ -17712,7 +17712,7 @@
                               "level": "B1"
                     },
                     "original": {
-                              "level": "n.B1"
+                              "level": "B1"
                     },
                     "percent": {
                               "level": "A2"
@@ -18691,7 +18691,7 @@
                               "level": "A1"
                     },
                     "double": {
-                              "level": "adv."
+                              "level": "A2"
                     },
                     "few": {
                               "level": "A1"
@@ -18909,7 +18909,7 @@
                               "level": "A1"
                     },
                     "before": {
-                              "level": "adv.A2"
+                              "level": "A2"
                     },
                     "but": {
                               "level": "B2"
