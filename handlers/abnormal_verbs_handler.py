@@ -5,7 +5,7 @@ from aiogram.types import CallbackQuery
 from games.games import Games
 from filters.abnormal_verbs_filter import abnormal_verbs_filter
 from useful_functuons.functions import replacer_escaped_symbols
-
+import translators as ts
 
 router = Router()
 
@@ -21,8 +21,10 @@ async def process_abnormal_verbs(callback: CallbackQuery):
         sentences = gamer.getting_context(values[0])
 
         sentences = replacer_escaped_symbols(list(sentences))
+        translation = gamer.getting_absolute_translation()
+        translated = ts.translate_text(key, to_language=translation)
 
-        text = (f"\\    ***{values[3].title()}*** \n\n\\* ***Base Form***   {key} "
+        text = (f"\\    ***{translated.title()}*** \n\n\\* ***Base Form***   {key} "
                 f"\n\n\\* ***Past Form***   {values[1]} \n\n"
                 f"\\* ***Participle***   {values[2]} \n\n{sentences[0]} \n\n{sentences[1]}")
         keyboard = create_inline_kb(2, last_btn=default_menu, **abnormal_verbs_keyboard)

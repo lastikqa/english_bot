@@ -49,6 +49,7 @@ class Games:
         question = ts.translate_text(answer, to_language=user_language)
         if translation != "en":
             variants = [ts.translate_text(i, to_language=translation) for i in variants]
+            question = ts.translate_text(answer, to_language=translation)
             answer, question = question, answer
         database.updating_answer(answer=answer, user_id=user_id)
         database.updating_variants_for_user(user_id=user_id, variants=variants)
