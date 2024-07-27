@@ -12,9 +12,8 @@ router = Router()
 @router.callback_query(chuck_filter)
 async def process_main_menu(callback: CallbackQuery):
     user_id = callback.from_user.id
-    database = EnglishBotDatabase(user_id=callback.from_user.id)
-    gamer = Games(user_id, data="_")
-    answer = database.checking_answer(user_id)
+    gamer = Games(user_id, data="english_5k.json")
+
 
     if callback.data == "/chuck":
         joke = gamer.getting_jokes(user_id)
