@@ -47,8 +47,8 @@ class Games:
         user_language = database.checking_user_language(user_id=self.user_id)
         answer, variants, level = self.getting_data_guessing_game()
         question = ts.translate_text(answer, to_language=user_language)
-        if translation == "en":
-            variants = [ts.translate_text(i, to_language=user_language) for i in variants]
+        if translation != "en":
+            variants = [ts.translate_text(i, to_language=translation) for i in variants]
             answer, question = question, answer
         database.updating_answer(answer=answer, user_id=user_id)
         database.updating_variants_for_user(user_id=user_id, variants=variants)
