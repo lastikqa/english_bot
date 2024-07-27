@@ -5,7 +5,7 @@ from aiogram.types import CallbackQuery
 from games.games import Games
 from filters.phrasal_verbs_filter import phrasal_verbs_filter
 from useful_functuons.functions import replacer_escaped_symbols
-
+import translators as ts
 router = Router()
 
 
@@ -18,7 +18,9 @@ async def process_phrasal_verbs(callback: CallbackQuery):
         key, values = gamer.game_data.getting_random_object_from_json()
         should_be_escaped = gamer.getting_context(word=key)
         should_be_escaped = list(should_be_escaped)
-        should_be_escaped.append(values[0])
+        translation = gamer.getting_absolute_translation()
+        translated  = ts.translate_text(key, to_language=translation)
+        should_be_escaped.append(translated)
         should_be_escaped = replacer_escaped_symbols(should_be_escaped)
         context, translation, values = should_be_escaped
         text = f" ***{key}***  \n\n{values} \n\n{context} \n\n{translation}"

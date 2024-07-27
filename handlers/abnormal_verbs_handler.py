@@ -19,6 +19,7 @@ async def process_abnormal_verbs(callback: CallbackQuery):
 
         key, values = gamer.game_data.getting_random_object_from_json()
         sentences = gamer.getting_context(values[0])
+
         sentences = replacer_escaped_symbols(list(sentences))
 
         text = (f"\\    ***{values[3].title()}*** \n\n\\* ***Base Form***   {key} "
