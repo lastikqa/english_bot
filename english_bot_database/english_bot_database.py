@@ -294,7 +294,7 @@ class EnglishBotDatabase:
         if current_user_score in user_scores:
             return text
         else:
-            text += "\n" + current_user_score[0] + " " + str(current_user_score[-1]) + "\n"
+            text += "\n" + current_user_score[0] + " " + str(current_user_score[-1])
 
     @staticmethod
     def updating_user_language(user_id: int, language: str, database_name: str = database_name):
