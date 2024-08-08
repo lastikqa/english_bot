@@ -26,7 +26,8 @@ class EnglishBotDatabase:
                     variants TEXT,
                     user_variants TEXT,
                     user_score INTEGER,
-                    counter_user_score INTEGER
+                    counter_user_score INTEGER,
+                    media_data BLOB
                     )
                 """)
 
@@ -40,9 +41,9 @@ class EnglishBotDatabase:
         cursor = connect.cursor()
         cursor.execute('INSERT INTO Users (user_id, first_name,  translation, user_language, game, '
                        'question, answer, user_answer, variants, user_variants, '
-                       'user_score, counter_user_score) '
-                       'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-                       (user_id, first_name, "en", "ru", "", "", "", "", "", "", 0, 0))
+                       'user_score, counter_user_score, media_data) '
+                       'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+                       (user_id, first_name, "en", "ru", "", "", "", "", "", "", 0, 0, None))
         connect.commit()
         connect.close()
 
@@ -114,7 +115,7 @@ class EnglishBotDatabase:
         connect.close()
 
     @staticmethod
-    def updating_user_translation(translation: str, user_id: int, database_name: str = database_name):
+    def updating_user_translation(translation, user_id: int, database_name: str = database_name):
         """the function updates user translation"""
         connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
@@ -314,3 +315,22 @@ class EnglishBotDatabase:
         user_language = cursor.fetchone()
         connect.close()
         return user_language[0]
+
+    @staticmethod
+    def getting_user_media_data(user_id: int, database_name: str = database_name) -> int:
+        """the function check user media data"""
+        connect = sqlite3.connect(database_name)
+        cursor = connect.cursor()
+        cursor.execute('SELECT media_data FROM Users WHERE user_id=?', (user_id,))
+        media = cursor.fetchone()
+        connect.close()
+        return media[0]
+
+    @staticmethod
+    def updating_user_media_data(user_id: int, media: str | None = None, database_name: str = database_name):
+        """the function updates user media data"""
+        connect = sqlite3.connect(database_name)
+        cursor = connect.cursor()
+        cursor.execute('UPDATE Users SET media_data = ? WHERE user_id = ?', (media, user_id))
+        connect.commit()
+        connect.close()

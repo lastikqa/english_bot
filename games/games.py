@@ -2,12 +2,13 @@ from english_bot_database.english_bot_database import EnglishBotDatabase
 import requests
 from bs4 import BeautifulSoup
 import random
-from gtts import gTTS
 import translators as ts
 from config import datebase_name
 from api.context_english_api import ContextEnglishApi
 from api.random_chuck_jokes_api import RandomChuckJokesApi
 from data.file_manager import FileManager
+from useful_functuons.text_converter import giving_audio
+
 database_name = datebase_name
 
 
@@ -110,11 +111,13 @@ class Games:
             variants = random.sample(variants, len(variants))
         else:
             variants = random.sample(variants, len(variants))
+
         database.updating_answer(answer=answer, user_id=user_id)
         database.updating_variants_for_user(user_id=user_id, variants=variants)
         database.updating_user_variants(user_id, variants)
         database.updating_question(user_id=user_id, question=question)
-        return question, variants
+        audio = giving_audio(user_id)
+        return question, variants, audio
 
     @staticmethod
     def getting_jokes(user_id):
@@ -124,13 +127,6 @@ class Games:
         database.updating_answer(user_id=user_id, answer=joke)
         return joke
 
-    @staticmethod
-    def getting_audio(user_id, text: str) -> str:
-        audio = gTTS(text=text, lang="en", slow=False)
-        audio.save(f"{user_id}.mp3")
-        name_audio = f"{user_id}.mp3"
-        return name_audio
-
     def getting_absolute_translation(self):
         translation = (EnglishBotDatabase.checking_user_translation(user_id=self.user_id),
                        EnglishBotDatabase.checking_user_language(user_id=self.user_id))
@@ -138,3 +134,4 @@ class Games:
             if i != 'en':
                 translation = i
         return translation
+

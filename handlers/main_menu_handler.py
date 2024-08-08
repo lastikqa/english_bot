@@ -5,7 +5,8 @@ from aiogram.types import CallbackQuery
 from games.games import Games
 from english_bot_database.english_bot_database import EnglishBotDatabase
 from filters.main_menu_filters import main_menu_filter
-
+from aiogram.types import InputMediaPhoto, FSInputFile, BufferedInputFile, InputMediaAudio
+import os
 router = Router()
 
 
@@ -19,17 +20,25 @@ async def process_main_menu(callback: CallbackQuery):
     if callback.data == "menu_button":
         database.updating_user_game(user_id)
         keyboard = create_inline_kb(1, **start_keyboard)
-        await callback.message.edit_text(text="Hello. Choose something", reply_markup=keyboard)
+        file_name = os.path.dirname(os.path.abspath("english_5k.png")) + "\\" + "data\\english_5k.png"
+        file = FSInputFile(path=file_name)
+        await callback.message.edit_media(media=InputMediaPhoto(media=file),
+                                          text="Hello. Choose something", reply_markup=keyboard)
 
     if callback.data == "guess_word":
         keyboard = create_inline_kb(2, last_btn=default_menu, **guess_word_keyboard)
-        await callback.message.edit_text(text="Choose parts of speech", reply_markup=keyboard)
+        file_name = os.path.dirname(os.path.abspath("english_5k.png")) + "\\" + "data\\english_5k.png"
+        file = FSInputFile(path=file_name)
+        await callback.message.edit_media(media=InputMediaPhoto(media=file), text="Choose parts of speech",
+                                          reply_markup=keyboard)
 
     if callback.data == "word_constructor":
         database.updating_user_answer(user_id)
-        question, variants = gamer.word_constructor(user_id)
+        question, variants, audio = gamer.word_constructor(user_id)
         keyboard = create_inline_kb(3, default_menu, *variants)
-        await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
+        file = BufferedInputFile(file=audio, filename=str(user_id))
+        await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"'{question}'"),
+                                          reply_markup=keyboard)
 
     if callback.data == "/v":
         database.updating_user_game(user_id, game="v")
