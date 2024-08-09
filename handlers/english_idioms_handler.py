@@ -5,8 +5,10 @@ from aiogram.types import CallbackQuery
 from games.games import Games
 from filters.english_idioms_filter import english_idioms_filter
 from useful_functuons.functions import replacer_escaped_symbols
-
-
+from aiogram.types import InputMediaAudio, BufferedInputFile
+from useful_functuons.text_converter import converting_text_to_audio
+import translators as ts
+from config import translator
 router = Router()
 
 
@@ -22,7 +24,12 @@ async def process_english_idioms(callback: CallbackQuery):
         should_be_escaped.append(values)
         should_be_escaped = replacer_escaped_symbols(should_be_escaped)
         context, translation, values = should_be_escaped
+        text_audio = key
+        audio = converting_text_to_audio(text_audio)
         text = f" ***{key}***  \n\n{values} \n\n{context} \n\n{translation}"
         keyboard = create_inline_kb(2, last_btn=default_menu, **english_idioms_keyboard)
-        await callback.message.edit_text(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)
+        file = BufferedInputFile(file=audio, filename=str(user_id))
+        await callback.message.edit_media(media=InputMediaAudio(media=file,
+                                                                caption=text, parse_mode="MarkdownV2"),
+                                          reply_markup=keyboard)
     await callback.answer()

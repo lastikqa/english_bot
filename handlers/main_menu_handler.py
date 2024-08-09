@@ -43,8 +43,10 @@ async def process_main_menu(callback: CallbackQuery):
     if callback.data == "/v":
         database.updating_user_game(user_id, game="v")
         database.updating_user_answer(user_id)
-        variants, question = gamer.constructor_phrases(user_id=user_id, language=language)
+        variants, question, audio = gamer.constructor_phrases(user_id=user_id, language=language)
         keyboard = create_inline_kb(2, default_menu, *variants)
-        await callback.message.edit_text(text=f"'{question}'", reply_markup=keyboard)
+        file = BufferedInputFile(file=audio, filename=str(user_id))
+        await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"'{question}'"),
+                                          reply_markup=keyboard)
 
     await callback.answer()

@@ -5,7 +5,10 @@ from aiogram.types import CallbackQuery
 from games.games import Games
 from filters.phrasal_verbs_filter import phrasal_verbs_filter
 from useful_functuons.functions import replacer_escaped_symbols
+from aiogram.types import InputMediaAudio, BufferedInputFile
+from useful_functuons.text_converter import converting_text_to_audio
 import translators as ts
+from config import translator
 router = Router()
 
 
@@ -19,11 +22,15 @@ async def process_phrasal_verbs(callback: CallbackQuery):
         should_be_escaped = gamer.getting_context(word=key)
         should_be_escaped = list(should_be_escaped)
         translation = gamer.getting_absolute_translation()
-        translated  = ts.translate_text(key, to_language=translation)
+        translated = ts.translate_text(key, to_language=translation, translator=translator)
         should_be_escaped.append(translated)
         should_be_escaped = replacer_escaped_symbols(should_be_escaped)
         context, translation, values = should_be_escaped
         text = f" ***{key}***  \n\n{values} \n\n{context} \n\n{translation}"
+        audio = converting_text_to_audio(key)
         keyboard = create_inline_kb(2, last_btn=default_menu, **phrasal_verbs_keyboard)
-        await callback.message.edit_text(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)
+        file = BufferedInputFile(file=audio, filename=str(user_id))
+        await callback.message.edit_media(media=InputMediaAudio(media=file,
+                                                                caption=text, parse_mode="MarkdownV2"),
+                                          reply_markup=keyboard)
     await callback.answer()

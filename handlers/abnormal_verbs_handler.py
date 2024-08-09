@@ -6,7 +6,9 @@ from games.games import Games
 from filters.abnormal_verbs_filter import abnormal_verbs_filter
 from useful_functuons.functions import replacer_escaped_symbols
 import translators as ts
-
+from config import translator
+from aiogram.types import InputMediaPhoto, FSInputFile, BufferedInputFile, InputMediaAudio
+import os
 router = Router()
 
 
@@ -22,11 +24,15 @@ async def process_abnormal_verbs(callback: CallbackQuery):
 
         sentences = replacer_escaped_symbols(list(sentences))
         translation = gamer.getting_absolute_translation()
-        translated = ts.translate_text(key, to_language=translation)
+        translated = ts.translate_text(key, to_language=translation, translator=translator)
 
-        text = (f"\\    ***{translated.title()}*** \n\n\\* ***Base Form***   {key} "
+
+        caption = (f"\\    ***{translated.title()}*** \n\n\\* ***Base Form***   {key} "
                 f"\n\n\\* ***Past Form***   {values[1]} \n\n"
                 f"\\* ***Participle***   {values[2]} \n\n{sentences[0]} \n\n{sentences[1]}")
         keyboard = create_inline_kb(2, last_btn=default_menu, **abnormal_verbs_keyboard)
-        await callback.message.edit_text(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)
+        file_name = os.path.dirname(os.path.abspath("english_5k.png")) + "\\" + "data\\english_5k.png"
+        file = FSInputFile(path=file_name)
+        await callback.message.edit_media(media=InputMediaPhoto(media=file, caption=caption, parse_mode="MarkdownV2"),
+                                          reply_markup=keyboard)
     await callback.answer()

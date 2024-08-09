@@ -2,13 +2,13 @@ from english_bot_database.english_bot_database import EnglishBotDatabase
 import requests
 from bs4 import BeautifulSoup
 import random
-import translators as ts
 from config import datebase_name
 from api.context_english_api import ContextEnglishApi
 from api.random_chuck_jokes_api import RandomChuckJokesApi
 from data.file_manager import FileManager
 from useful_functuons.text_converter import giving_audio
-
+import translators as ts
+from config import translator
 database_name = datebase_name
 
 
@@ -38,7 +38,7 @@ class Games:
         while find_word not in context:
             context = random.choice(sentences)
         translation = self.getting_absolute_translation()
-        translation = ts.translate_text(context, to_language=translation)
+        translation = ts.translate_text(context, to_language=translation, translator=translator)
         return context, translation
 
     def gusesing_game(self, user_id):
@@ -47,16 +47,17 @@ class Games:
         translation = database.checking_user_translation(user_id=self.user_id)
         user_language = database.checking_user_language(user_id=self.user_id)
         answer, variants, level = self.getting_data_guessing_game()
-        question = ts.translate_text(answer, to_language=user_language)
+        question = ts.translate_text(answer, to_language=user_language, translator=translator)
         if translation != "en":
-            variants = [ts.translate_text(i, to_language=translation) for i in variants]
-            question = ts.translate_text(answer, to_language=translation)
+            variants = [ts.translate_text(i, to_language=translation, translator=translator) for i in variants]
+            question = ts.translate_text(answer, to_language=translation, translator=translator)
             answer, question = question, answer
         database.updating_answer(answer=answer, user_id=user_id)
         database.updating_variants_for_user(user_id=user_id, variants=variants)
         database.updating_question(user_id=user_id, question=question)
+        audio = giving_audio(user_id)
 
-        return question, variants, level
+        return question, variants, level, audio
 
     def getting_data_guessing_game(self, constructor=None):
         parts_of_speech = self.game_data.reading_json()
@@ -95,7 +96,8 @@ class Games:
         database.updating_variants_for_user(user_id, variants=variants)
         database.updating_user_variants(user_id, variants)
         database.updating_question(user_id=user_id, question=question)
-        return variants, question
+        audio = giving_audio(user_id)
+        return variants, question, audio
 
     def word_constructor(self, user_id: int) -> tuple | str:
         """the function splits the word into a  lists with its letters into a random order
@@ -104,7 +106,7 @@ class Games:
         database.updating_user_game(user_id, game="word_constructor")
         answer = self.getting_data_guessing_game(constructor="word")
         translation = self.getting_absolute_translation()
-        question = ts.translate_text(answer, to_language=translation)
+        question = ts.translate_text(answer, to_language=translation, translator=translator)
         variants = answer
         if " " in variants:
             variants = variants.replace(" ", "_")
