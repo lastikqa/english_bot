@@ -7,8 +7,7 @@ from filters.english_idioms_filter import english_idioms_filter
 from useful_functuons.functions import replacer_escaped_symbols
 from aiogram.types import InputMediaAudio, BufferedInputFile
 from useful_functuons.text_converter import converting_text_to_audio
-import translators as ts
-from config import translator
+
 router = Router()
 
 

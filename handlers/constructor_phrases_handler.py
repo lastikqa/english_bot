@@ -32,7 +32,8 @@ async def process_main_menu(callback: CallbackQuery):
             user_ans = database.checking_user_answer(user_id)
             keyboard = create_inline_kb(2, default_menu, *user)
             file = BufferedInputFile(file=audio, filename=str(user_id))
-            await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"{user_question} \n{user_ans}"),
+            await callback.message.edit_media(media=InputMediaAudio(media=file,
+                                                                    caption=f"{user_question} \n{user_ans}"),
                                               reply_markup=keyboard)
         except TelegramBadRequest:
             user_answer = database.checking_user_answer(user_id).strip()
@@ -44,7 +45,8 @@ async def process_main_menu(callback: CallbackQuery):
                 variants, question, audio = gamer.constructor_phrases(user_id=user_id, language=language)
                 keyboard = create_inline_kb(2, default_menu, *variants)
                 file = BufferedInputFile(file=audio, filename=str(user_id))
-                await callback.message.edit_media(media=InputMediaAudio(media=file,caption=f"'{question}'"), reply_markup=keyboard)
+                await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"'{question}'"),
+                                                  reply_markup=keyboard)
             else:
                 database.updating_user_answer(user_id)
                 user_score = database.checking_user_score(user_id=user_id)
@@ -55,5 +57,6 @@ async def process_main_menu(callback: CallbackQuery):
                 database.updating_score_count(user_id=user_id)
                 keyboard = create_inline_kb(2, default_menu, *variants)
                 file = BufferedInputFile(file=audio, filename=str(user_id))
-                await callback.message.edit_media(media=InputMediaAudio(media=file,caption=f"'{user_question}'"), reply_markup=keyboard)
+                await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"'{user_question}'"),
+                                                  reply_markup=keyboard)
     await callback.answer()

@@ -5,8 +5,7 @@ from aiogram.types import CallbackQuery
 from games.games import Games
 from english_bot_database.english_bot_database import EnglishBotDatabase
 from filters.chuck_norris_filter import chuck_filter
-import translators as ts
-from config import translator
+from useful_functuons.translation import translation_text
 from aiogram.types import BufferedInputFile, InputMediaAudio
 from useful_functuons.text_converter import giving_audio
 router = Router()
@@ -16,7 +15,6 @@ router = Router()
 async def process_main_menu(callback: CallbackQuery):
     user_id = callback.from_user.id
     gamer = Games(user_id, data="english_5k.json")
-
 
     if callback.data == "/chuck":
         joke = gamer.getting_jokes(user_id)
@@ -30,10 +28,9 @@ async def process_main_menu(callback: CallbackQuery):
         database = EnglishBotDatabase(user_id)
         answer = database.checking_answer(user_id)
         translation = gamer.getting_absolute_translation()
-        translated = ts.translate_text(answer, to_language=translation, translator=translator)
+        translated = translation_text(answer, to_language=translation)
         keyboard = create_inline_kb(2, last_btn=default_menu, **chuck_keyboard)
         audio = database.getting_user_media_data(user_id)
         file = BufferedInputFile(file=audio, filename=str(user_id))
         await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"{answer}\n \n{translated}"),
                                           reply_markup=keyboard)
-

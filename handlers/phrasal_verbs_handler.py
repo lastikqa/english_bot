@@ -7,8 +7,7 @@ from filters.phrasal_verbs_filter import phrasal_verbs_filter
 from useful_functuons.functions import replacer_escaped_symbols
 from aiogram.types import InputMediaAudio, BufferedInputFile
 from useful_functuons.text_converter import converting_text_to_audio
-import translators as ts
-from config import translator
+from useful_functuons.translation import translation_text
 router = Router()
 
 
@@ -22,7 +21,7 @@ async def process_phrasal_verbs(callback: CallbackQuery):
         should_be_escaped = gamer.getting_context(word=key)
         should_be_escaped = list(should_be_escaped)
         translation = gamer.getting_absolute_translation()
-        translated = ts.translate_text(key, to_language=translation, translator=translator)
+        translated = translation_text(key, to_language=translation)
         should_be_escaped.append(translated)
         should_be_escaped = replacer_escaped_symbols(should_be_escaped)
         context, translation, values = should_be_escaped

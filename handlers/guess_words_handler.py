@@ -78,7 +78,7 @@ async def process_guess_words(callback: CallbackQuery):
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
         await callback.message.edit_media(media=InputMediaAudio(media=file,
-                                                                caption=f"Level {level} \nWhats the right translation for '{question}'?"),
+                                          caption=f"Level {level} \nWhats the right translation for '{question}'?"),
                                           reply_markup=keyboard)
     else:
         database.updating_user_rating(user_id, win=False)
