@@ -5,7 +5,7 @@ from config import token
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 from keyboards.keyboards import create_inline_kb
-from lexicon.lexicon import start_keyboard, help_message, default_menu
+from lexicon.lexicon import start_keyboard, default_menu
 from lexicon.user_handlers_lexicon import languages
 from english_bot_database.english_bot_database import EnglishBotDatabase
 from aiogram import Router
@@ -43,11 +43,8 @@ async def menu_button(message: Message):
     message_id = message.message_id
     chat_id = message.chat.id
 
-    if message.text == "/help":
-        keyboard = create_inline_kb(1, last_btn=default_menu)
-        await message.answer(text=help_message, parse_mode="MarkdownV2", reply_markup=keyboard)
 
-    elif message.text == "/translation":
+    if message.text == "/translation":
         translation = database.checking_user_translation(user_id=message.from_user.id)
         language = database.checking_user_language(user_id=user_id)
 
