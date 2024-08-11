@@ -3,7 +3,6 @@ from keyboards.keyboards import create_inline_kb
 from lexicon.lexicon import start_keyboard, guess_word_keyboard, default_menu
 from aiogram.types import CallbackQuery
 from games.games import Games
-from english_bot_database.english_bot_database import EnglishBotDatabase
 from filters.main_menu_filters import main_menu_filter
 from aiogram.types import InputMediaPhoto, FSInputFile, BufferedInputFile, InputMediaAudio
 import os
@@ -19,7 +18,7 @@ async def process_main_menu(callback: CallbackQuery):
     language = database.checking_user_translation()
     if callback.data == "menu_button":
         database.updating_user_game()
-        keyboard = create_inline_kb(1, **start_keyboard)
+        keyboard = create_inline_kb(2, **start_keyboard)
         file_name = os.path.dirname(os.path.abspath("english_5k.png")) + "\\" + "data\\english_5k.png"
         file = FSInputFile(path=file_name)
         await callback.message.edit_media(media=InputMediaPhoto(media=file),

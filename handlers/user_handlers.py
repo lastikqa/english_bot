@@ -25,9 +25,9 @@ async def process_start_command(message: Message):
     user_id = message.from_user.id
     database = EnglishBotDatabase(user_id)
 
-    if database.looking_for_user_in_db(user_id=user_id) is False:
+    if database.looking_for_user_in_db() is False:
         database.creating_object_user_in_db(user_id, first_name)
-    keyboard = create_inline_kb(1, **start_keyboard)
+    keyboard = create_inline_kb(2, **start_keyboard)
     file = os.path.dirname(os.path.abspath("english_5k.png")) + "\\" + "data\\english_5k.png"
     file = FSInputFile(path = file)
     await message.answer_photo(photo=file,
@@ -71,7 +71,7 @@ async def menu_button(message: Message):
     elif "!setlanguage" in message.text:
         new_language = message.text.split()[-1]
         if new_language in languages:
-            database.updating_user_translation(user_id=user_id, translation="en")
-            database.updating_user_language(user_id=user_id, language=new_language)
+            database.updating_user_translation(translation="en")
+            database.updating_user_language(language=new_language)
 
     await bot.delete_message(chat_id, message_id)
