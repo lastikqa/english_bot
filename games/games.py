@@ -118,12 +118,10 @@ class Games:
         audio = self.giving_audio()
         return question, variants, audio
 
-    @staticmethod
-    def getting_jokes(user_id):
-        database = EnglishBotDatabase(user_id)
+    def getting_jokes(self):
         joke = requests.get(RandomChuckJokesApi.chuck_url).json()
         joke = joke["joke"]
-        database.updating_answer(answer=joke)
+        self.database.updating_answer(answer=joke)
         return joke
 
     def getting_absolute_translation(self):
