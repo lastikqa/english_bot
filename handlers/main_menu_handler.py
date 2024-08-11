@@ -13,12 +13,12 @@ router = Router()
 @router.callback_query(main_menu_filter)
 async def process_main_menu(callback: CallbackQuery):
     user_id = callback.from_user.id
-    database = EnglishBotDatabase(user_id=callback.from_user.id)
     gamer = Games(user_id, data="english_5k.json")
+    database = gamer.database
 
-    language = database.checking_user_translation(user_id)
+    language = database.checking_user_translation()
     if callback.data == "menu_button":
-        database.updating_user_game(user_id)
+        database.updating_user_game()
         keyboard = create_inline_kb(1, **start_keyboard)
         file_name = os.path.dirname(os.path.abspath("english_5k.png")) + "\\" + "data\\english_5k.png"
         file = FSInputFile(path=file_name)
@@ -33,17 +33,17 @@ async def process_main_menu(callback: CallbackQuery):
                                           reply_markup=keyboard)
 
     if callback.data == "word_constructor":
-        database.updating_user_answer(user_id)
-        question, variants, audio = gamer.word_constructor(user_id)
+        database.updating_user_answer()
+        question, variants, audio = gamer.word_constructor()
         keyboard = create_inline_kb(3, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
         await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"'{question}'"),
                                           reply_markup=keyboard)
 
     if callback.data == "/v":
-        database.updating_user_game(user_id, game="v")
+        database.updating_user_game(game="v")
         database.updating_user_answer(user_id)
-        variants, question, audio = gamer.constructor_phrases(user_id=user_id, language=language)
+        variants, question, audio = gamer.constructor_phrases(language=language)
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
         await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"'{question}'"),

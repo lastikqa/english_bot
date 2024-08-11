@@ -2,19 +2,20 @@ from english_bot_database.english_bot_database import EnglishBotDatabase
 import requests
 from bs4 import BeautifulSoup
 import random
-from config import datebase_name
+from config import database_name
 from api.context_english_api import ContextEnglishApi
 from api.random_chuck_jokes_api import RandomChuckJokesApi
 from data.file_manager import FileManager
-from useful_functuons.text_converter import giving_audio
+from useful_functuons.text_converter import converting_text_to_audio
 from useful_functuons.translation import translation_text
-database_name = datebase_name
+database_name = database_name
 
 
 class Games:
     def __init__(self, user_id, data):
         self.user_id = user_id
         self.game_data = FileManager(data)
+        self.database = EnglishBotDatabase(user_id)
 
     def getting_context(self, word: str) -> tuple[str, str]:
         """english words should be seen in its contexts. the function gets a word and return a sentence with the word
@@ -40,21 +41,20 @@ class Games:
         translation = translation_text(context, to_language=translation)
         return context, translation
 
-    def gusesing_game(self, user_id):
-        database = EnglishBotDatabase(user_id)
-        database.checking_user_game(user_id=user_id)
-        translation = database.checking_user_translation(user_id=self.user_id)
-        user_language = database.checking_user_language(user_id=self.user_id)
+    def guessing_game(self):
+        self.database.checking_user_game()
+        translation = self.database.checking_user_translation()
+        user_language = self.database.checking_user_language()
         answer, variants, level = self.getting_data_guessing_game()
         question = translation_text(answer, to_language=user_language)
         if translation != "en":
             variants = [translation_text(i, to_language=translation) for i in variants]
             question = translation_text(answer, to_language=translation)
             answer, question = question, answer
-        database.updating_answer(answer=answer, user_id=user_id)
-        database.updating_variants_for_user(user_id=user_id, variants=variants)
-        database.updating_question(user_id=user_id, question=question)
-        audio = giving_audio(user_id)
+        self.database.updating_answer(answer=answer)
+        self.database.updating_variants_for_user(variants=variants)
+        self.database.updating_question(question=question)
+        audio = self.giving_audio()
 
         return question, variants, level, audio
 
@@ -73,7 +73,7 @@ class Games:
             return word
 
         else:
-            user_game = EnglishBotDatabase.checking_user_game(user_id=self.user_id)
+            user_game = self.database.checking_user_game()
             variants_of_words = []
             list_of_words = [i for i in parts_of_speech[user_game]]
             for _ in range(9):
@@ -84,25 +84,23 @@ class Games:
             level = parts_of_speech[user_game][answer]["level"]
         return answer, variants_of_words, level
 
-    def constructor_phrases(self, user_id: int, language):
-        database = EnglishBotDatabase(user_id)
+    def constructor_phrases(self, language):
         question, answer = self.getting_data_guessing_game(constructor="phrase")
         if language == "en":
             question, answer = answer, question
         variants = answer.split()
         variants = random.sample(variants, len(variants))
-        database.updating_answer(user_id, answer=answer)
-        database.updating_variants_for_user(user_id, variants=variants)
-        database.updating_user_variants(user_id, variants)
-        database.updating_question(user_id=user_id, question=question)
-        audio = giving_audio(user_id)
+        self.database.updating_answer(answer=answer)
+        self.database.updating_variants_for_user(variants=variants)
+        self.database.updating_user_variants(variants)
+        self.database.updating_question(question=question)
+        audio = self.giving_audio()
         return variants, question, audio
 
-    def word_constructor(self, user_id: int) -> tuple | str:
+    def word_constructor(self) -> tuple | str:
         """the function splits the word into a  lists with its letters into a random order
         that is used to make inline keyboards"""
-        database = EnglishBotDatabase(user_id)
-        database.updating_user_game(user_id, game="word_constructor")
+        self.database.updating_user_game(game="word_constructor")
         answer = self.getting_data_guessing_game(constructor="word")
         translation = self.getting_absolute_translation()
         question = translation_text(answer, to_language=translation)
@@ -113,11 +111,11 @@ class Games:
         else:
             variants = random.sample(variants, len(variants))
 
-        database.updating_answer(answer=answer, user_id=user_id)
-        database.updating_variants_for_user(user_id=user_id, variants=variants)
-        database.updating_user_variants(user_id, variants)
-        database.updating_question(user_id=user_id, question=question)
-        audio = giving_audio(user_id)
+        self.database.updating_answer(answer=answer)
+        self.database.updating_variants_for_user(variants=variants)
+        self.database.updating_user_variants(variants)
+        self.database.updating_question(question=question)
+        audio = self.giving_audio()
         return question, variants, audio
 
     @staticmethod
@@ -125,13 +123,31 @@ class Games:
         database = EnglishBotDatabase(user_id)
         joke = requests.get(RandomChuckJokesApi.chuck_url).json()
         joke = joke["joke"]
-        database.updating_answer(user_id=user_id, answer=joke)
+        database.updating_answer(answer=joke)
         return joke
 
     def getting_absolute_translation(self):
-        translation = (EnglishBotDatabase.checking_user_translation(user_id=self.user_id),
-                       EnglishBotDatabase.checking_user_language(user_id=self.user_id))
+        translation = (self.database.checking_user_translation(),
+                       self.database.checking_user_language())
         for i in translation:
             if i != 'en':
                 translation = i
         return translation
+
+    def giving_audio(self):
+        games = ['verbs', 'prepositions', 'numbers', 'nouns', 'pronouns', 'adjectives', 'conjunctions']
+        user_game = self.database.checking_user_game()
+
+        translation = self.database.checking_user_translation()
+        if user_game in games:
+            if translation == "en":
+                word = self.database.checking_answer()
+            else:
+                word = self.database.checking_question()
+        elif user_game == 'v' and translation == 'en':
+            word = self.database.checking_question()
+        else:
+            word = self.database.checking_answer()
+        audio_bytes = converting_text_to_audio(word)
+        self.database.updating_user_media_data(media=audio_bytes)
+        return audio_bytes

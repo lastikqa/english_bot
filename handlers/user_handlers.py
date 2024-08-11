@@ -43,7 +43,6 @@ async def menu_button(message: Message):
     message_id = message.message_id
     chat_id = message.chat.id
 
-    print(message)
     if message.text == "/help":
         keyboard = create_inline_kb(1, last_btn=default_menu)
         await message.answer(text=help_message, parse_mode="MarkdownV2", reply_markup=keyboard)
@@ -70,7 +69,7 @@ async def menu_button(message: Message):
         file.updating_json(message.text)
 
     elif "!setlanguage" in message.text:
-        new_language = message.text.split()[1]
+        new_language = message.text.split()[-1]
         if new_language in languages:
             database.updating_user_translation(user_id=user_id, translation="en")
             database.updating_user_language(user_id=user_id, language=new_language)

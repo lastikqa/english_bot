@@ -7,7 +7,7 @@ from english_bot_database.english_bot_database import EnglishBotDatabase
 from filters.chuck_norris_filter import chuck_filter
 from useful_functuons.translation import translation_text
 from aiogram.types import BufferedInputFile, InputMediaAudio
-from useful_functuons.text_converter import giving_audio
+
 router = Router()
 
 
@@ -18,7 +18,7 @@ async def process_main_menu(callback: CallbackQuery):
 
     if callback.data == "/chuck":
         joke = gamer.getting_jokes(user_id)
-        audio = giving_audio(user_id)
+        audio = gamer.giving_audio()
         keyboard = create_inline_kb(2, last_btn=default_menu, **chuck_keyboard)
         file = BufferedInputFile(file=audio, filename=str(user_id))
         await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"'{joke}'"),
@@ -26,11 +26,11 @@ async def process_main_menu(callback: CallbackQuery):
 
     if callback.data == "/translation":
         database = EnglishBotDatabase(user_id)
-        answer = database.checking_answer(user_id)
+        answer = database.checking_answer()
         translation = gamer.getting_absolute_translation()
         translated = translation_text(answer, to_language=translation)
         keyboard = create_inline_kb(2, last_btn=default_menu, **chuck_keyboard)
-        audio = database.getting_user_media_data(user_id)
+        audio = database.getting_user_media_data()
         file = BufferedInputFile(file=audio, filename=str(user_id))
         await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"{answer}\n \n{translated}"),
                                           reply_markup=keyboard)
