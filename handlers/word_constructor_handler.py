@@ -15,7 +15,7 @@ router = Router()
 async def processing_word_constructors(callback: CallbackQuery):
     user_id = callback.from_user.id
     gamer = Games(user_id, data="english_5k.json")
-    database = gamer.database()
+    database = gamer.database
 
     user_question = database.checking_question()
     user_variants = database.checking_user_variants()

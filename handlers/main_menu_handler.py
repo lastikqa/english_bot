@@ -42,7 +42,7 @@ async def process_main_menu(callback: CallbackQuery):
 
     if callback.data == "/v":
         database.updating_user_game(game="v")
-        database.updating_user_answer(user_id)
+        database.updating_user_answer()
         variants, question, audio = gamer.constructor_phrases(language=language)
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))

@@ -26,8 +26,8 @@ async def process_main_menu(callback: CallbackQuery):
         try:
             user_variants.remove(callback.data)
             database.updating_user_variants(user_variants)
-            user = (database.checking_user_answer()+" "+callback.data)
-            database.updating_user_answer(user_answer=user)
+            user_answer = (database.checking_user_answer()+" "+callback.data)
+            database.updating_user_answer(user_answer=user_answer)
             user = database.checking_user_variants()
             user_ans = database.checking_user_answer()
             keyboard = create_inline_kb(2, default_menu, *user)
