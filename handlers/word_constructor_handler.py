@@ -30,7 +30,7 @@ async def processing_word_constructors(callback: CallbackQuery):
                 data = " "
                 user_answer = (database.checking_user_answer() + data)
             else:
-                user_answer = (database.checking_user_answer()+callback.data)
+                user_answer = (database.checking_user_answer() + callback.data)
             database.updating_user_answer(user_answer=user_answer)
             user_variants = database.checking_user_variants()
             keyboard = create_inline_kb(3, default_menu, *user_variants)
