@@ -7,9 +7,10 @@ class EnglishBotDatabase:
         self.user_id = user_id
         self.database_name = database_name
 
-    def creating_users_db(self):
-        """the function just creates 'sqllite' database to save some information about users """
-        connect = sqlite3.connect(self.database_name)
+    @staticmethod
+    def creating_users_db():
+        """the function just creates 'sqlite3' database to save some information about users """
+        connect = sqlite3.connect(database_name)
         cursor = connect.cursor()
         cursor.execute("""CREATE TABLE IF NOT EXISTS Users
                     (id INTEGER PRIMARY KEY AUTOINCREMENT,  

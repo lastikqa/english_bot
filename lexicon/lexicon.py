@@ -1,12 +1,12 @@
 start_keyboard = {"Guess Word": "guess_word", "Word Constructor": "word_constructor", "Phrase Constructor": "/v",
                   "Abnormal Verbs": "abnormal_verbs", "Phrasal Verbs": "phrasal_verbs", "English Idioms": '/idioms',
-                  "Chuck Norris": "/chuck"}
+                  "Chuck Norris": "/chuck", "About The Bot": "/about_the_bot"}
 
 guess_word_keyboard = {"Verbs": "/verbs", "Nouns": "/nouns", "Numbers": "/numbers", "Adjectives": "/adjectives",
                        "Pronouns": "/pronouns", "Prepositions": "/prepositions", "Conjunctions": "/conjunctions"}
 
-menu_keyboard = {"/help": "to see some information about the bot", "/translation":
-                 "to switch the current translation ", "/scores": " to see user scores"}
+menu_keyboard = {"/translation":
+                 "to switch the current translation "}
 
 default_menu = "Menu Button"
 

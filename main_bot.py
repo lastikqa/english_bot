@@ -5,7 +5,7 @@ import time
 import config
 from english_bot_database.english_bot_database import EnglishBotDatabase
 from handlers import main_menu_handler, word_constructor_handler
-from handlers import user_handlers
+from handlers import user_handlers, about_the_bot_handler
 from handlers import guess_words_handler
 from handlers import constructor_phrases_handler, chuck_norris_handler
 from handlers import abnormal_verbs_handler, phrasal_verbs_handler, english_idioms_handler
@@ -23,6 +23,7 @@ async def main():
     dp = Dispatcher()
 
     # Регистриуем роутеры в диспетчере
+    dp.include_router(about_the_bot_handler.router)
     dp.include_router(user_handlers.router)
     dp.include_router(english_idioms_handler.router)
     dp.include_router(abnormal_verbs_handler.router)
