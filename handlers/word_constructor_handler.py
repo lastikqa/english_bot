@@ -4,7 +4,6 @@ from lexicon.lexicon import default_menu
 from aiogram.types import CallbackQuery
 from aiogram.exceptions import TelegramBadRequest
 from games.games import Games
-from english_bot_database.english_bot_database import EnglishBotDatabase
 from filters.word_constructor_filter import word_constructor_filter
 from aiogram.types import BufferedInputFile, InputMediaAudio
 

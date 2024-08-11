@@ -3,7 +3,6 @@ from keyboards.keyboards import create_inline_kb
 from lexicon.lexicon import default_menu
 from aiogram.types import CallbackQuery
 from games.games import Games
-from english_bot_database.english_bot_database import EnglishBotDatabase
 from filters.guess_words_filter import guess_word_filter
 from aiogram.types import InputMediaAudio, BufferedInputFile
 

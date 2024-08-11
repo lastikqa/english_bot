@@ -10,7 +10,7 @@ def create_inline_kb(width: int,
                      last_btn: str | None = None,
                      *args: str,
                      **kwargs: str
-                    ) -> InlineKeyboardMarkup:
+                     ) -> InlineKeyboardMarkup:
     kb_builder = InlineKeyboardBuilder()
     buttons: list[InlineKeyboardButton] = []
     if args:
