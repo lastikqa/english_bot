@@ -2,8 +2,7 @@ from aiogram.types import CallbackQuery
 from english_bot_database.english_bot_database import EnglishBotDatabase
 
 
-def word_constructor_filter(callback: CallbackQuery) -> bool:
+async def word_constructor_filter(callback: CallbackQuery) -> bool:
     gamer = EnglishBotDatabase(user_id=callback.from_user.id)
-    game = gamer.checking_user_game()
+    game = await gamer.checking_user_game()
     return game == "word_constructor"
-

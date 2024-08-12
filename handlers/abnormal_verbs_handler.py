@@ -22,7 +22,7 @@ async def process_abnormal_verbs(callback: CallbackQuery):
         sentences = await gamer.getting_context(values[0])
 
         sentences = replacer_escaped_symbols(list(sentences))
-        translation = gamer.getting_absolute_translation()
+        translation = await gamer.getting_absolute_translation()
         translated = translation_text(key, to_language=translation)
 
         caption = (f"\\    ***{translated.title()}*** \n\n\\* ***Base Form***   {key} "

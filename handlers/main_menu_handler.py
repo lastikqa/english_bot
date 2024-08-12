@@ -15,9 +15,10 @@ async def process_main_menu(callback: CallbackQuery):
     gamer = Games(user_id, data="english_5k.json")
     database = gamer.database
 
-    language = database.checking_user_translation()
+    language = await database.checking_user_translation()
+
     if callback.data == "menu_button":
-        database.updating_user_game()
+        await database.updating_user_game()
         keyboard = create_inline_kb(2, **start_keyboard)
         file_name = os.path.dirname(os.path.abspath("english_5k.png")) + "\\" + "data\\english_5k.png"
         file = FSInputFile(path=file_name)
@@ -32,7 +33,7 @@ async def process_main_menu(callback: CallbackQuery):
                                           reply_markup=keyboard)
 
     if callback.data == "word_constructor":
-        database.updating_user_answer()
+        await database.updating_user_answer()
         question, variants, audio = await gamer.word_constructor()
         keyboard = create_inline_kb(3, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
@@ -40,8 +41,8 @@ async def process_main_menu(callback: CallbackQuery):
                                           reply_markup=keyboard)
 
     if callback.data == "/v":
-        database.updating_user_game(game="v")
-        database.updating_user_answer()
+        await database.updating_user_game(game="v")
+        await database.updating_user_answer()
         variants, question, audio = await gamer.constructor_phrases(language=language)
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))

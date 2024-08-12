@@ -20,7 +20,7 @@ async def process_phrasal_verbs(callback: CallbackQuery):
         key, values = gamer.game_data.getting_random_object_from_json()
         should_be_escaped = await gamer.getting_context(word=key)
         should_be_escaped = list(should_be_escaped)
-        translation = gamer.getting_absolute_translation()
+        translation = await gamer.getting_absolute_translation()
         translated = translation_text(key, to_language=translation)
         should_be_escaped.append(translated)
         should_be_escaped = replacer_escaped_symbols(should_be_escaped)

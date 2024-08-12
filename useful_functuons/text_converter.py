@@ -7,7 +7,3 @@ def converting_text_to_audio(text: str):
     audio_bytes = io.BytesIO()
     audio.write_to_fp(audio_bytes)
     return audio_bytes.getvalue()
-
-
-
-

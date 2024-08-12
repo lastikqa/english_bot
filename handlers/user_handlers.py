@@ -25,8 +25,8 @@ async def process_start_command(message: Message):
     user_id = message.from_user.id
     database = EnglishBotDatabase(user_id)
 
-    if database.looking_for_user_in_db() is False:
-        database.creating_object_user_in_db(user_id, first_name)
+    if await database.looking_for_user_in_db() is False:
+        await database.creating_object_user_in_db(first_name)
     keyboard = create_inline_kb(2, **start_keyboard)
     file = os.path.dirname(os.path.abspath("english_5k.png")) + "\\" + "data\\english_5k.png"
     file = FSInputFile(path = file)
@@ -45,19 +45,19 @@ async def menu_button(message: Message):
 
 
     if message.text == "/translation":
-        translation = database.checking_user_translation(user_id=message.from_user.id)
-        language = database.checking_user_language(user_id=user_id)
+        translation = await database.checking_user_translation()
+        language = await database.checking_user_language()
 
         translation, language = language, translation
-        database.updating_user_translation(user_id=message.from_user.id, translation=translation)
-        database.updating_user_language(language=language, user_id=user_id)
+        await database.updating_user_translation(translation=translation)
+        await database.updating_user_language(language=language)
 
     elif "!setnicname" in message.text.split()[0].lower():
         nickname = message.text.split()[1]
-        database.updating_user_first_name(user_id=message.from_user.id, nickname=nickname)
+        await database.updating_user_first_name(user_id=message.from_user.id, nickname=nickname)
 
     elif message.text == '/scores':
-        text = database.getting_user_scores(user_id=message.from_user.id)
+        text = await database.getting_user_scores(user_id=message.from_user.id)
         keyboard = create_inline_kb(1, last_btn=default_menu)
         await message.answer(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)
 
@@ -68,7 +68,7 @@ async def menu_button(message: Message):
     elif "!setlanguage" in message.text:
         new_language = message.text.split()[-1]
         if new_language in languages:
-            database.updating_user_translation(translation="en")
-            database.updating_user_language(language=new_language)
+            await database.updating_user_translation(translation="en")
+            await database.updating_user_language(language=new_language)
 
     await bot.delete_message(chat_id, message_id)

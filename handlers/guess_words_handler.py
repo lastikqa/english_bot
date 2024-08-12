@@ -14,11 +14,11 @@ async def process_guess_words(callback: CallbackQuery):
     user_id = callback.from_user.id
     game = Games(user_id, data="english_5k.json")
     database = game.database
-    game_status = database.checking_user_game()
-    answer = database.checking_answer()
+    game_status = await database.checking_user_game()
+    answer = await database.checking_answer()
 
     if callback.data == "/verbs":
-        database.updating_user_game(game="verbs")
+        await database.updating_user_game(game="verbs")
         question, variants, level, audio = await game.guessing_game()
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
@@ -27,7 +27,7 @@ async def process_guess_words(callback: CallbackQuery):
                                           reply_markup=keyboard)
 
     elif callback.data == "/nouns":
-        database.updating_user_game(game="nouns")
+        await database.updating_user_game(game="nouns")
         question, variants, level, audio = await game.guessing_game()
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
@@ -35,7 +35,7 @@ async def process_guess_words(callback: CallbackQuery):
                                           caption=f"Level {level} \nWhats the right translation for '{question}'?"),
                                           reply_markup=keyboard)
     elif callback.data == "/numbers":
-        database.updating_user_game(game="numbers")
+        await database.updating_user_game(game="numbers")
         question, variants, level, audio = await game.guessing_game()
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
@@ -43,7 +43,7 @@ async def process_guess_words(callback: CallbackQuery):
                                           caption=f"Level {level} \nWhats the right translation for '{question}'?"),
                                           reply_markup=keyboard)
     elif callback.data == "/adjectives":
-        database.updating_user_game(game="adjectives")
+        await database.updating_user_game(game="adjectives")
         question, variants, level, audio = await game.guessing_game()
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
@@ -52,7 +52,7 @@ async def process_guess_words(callback: CallbackQuery):
                                           reply_markup=keyboard)
 
     elif callback.data == "/prepositions":
-        database.updating_user_game(game="prepositions")
+        await database.updating_user_game(game="prepositions")
         question, variants, level, audio = await game.guessing_game()
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
@@ -61,7 +61,7 @@ async def process_guess_words(callback: CallbackQuery):
                                           reply_markup=keyboard)
 
     elif callback.data == "/conjunctions":
-        database.updating_user_game(game="conjunctions")
+        await database.updating_user_game(game="conjunctions")
         question, variants, level, audio = await game.guessing_game()
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
@@ -70,7 +70,7 @@ async def process_guess_words(callback: CallbackQuery):
                                           reply_markup=keyboard)
 
     elif callback.data == "/pronouns":
-        database.updating_user_game(game="pronouns")
+        await database.updating_user_game(game="pronouns")
         question, variants, level, audio = await game.guessing_game()
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
@@ -79,7 +79,7 @@ async def process_guess_words(callback: CallbackQuery):
                                           reply_markup=keyboard)
 
     elif callback.data == answer and game_status != "v" and game_status != "word_constructor":
-        database.updating_user_rating()
+        await database.updating_user_rating()
         question, variants, level, audio = await game.guessing_game()
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
@@ -87,5 +87,5 @@ async def process_guess_words(callback: CallbackQuery):
                                           caption=f"Level {level} \nWhats the right translation for '{question}'?"),
                                           reply_markup=keyboard)
     else:
-        database.updating_user_rating(win=False)
+        await database.updating_user_rating(win=False)
     await callback.answer()
