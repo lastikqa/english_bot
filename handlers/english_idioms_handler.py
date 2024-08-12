@@ -18,7 +18,7 @@ async def process_english_idioms(callback: CallbackQuery):
 
     if callback.data == "/idioms":
         key, values = gamer.game_data.getting_random_object_from_json()
-        should_be_escaped = gamer.getting_context(word=key)
+        should_be_escaped = await gamer.getting_context(word=key)
         should_be_escaped = list(should_be_escaped)
         should_be_escaped.append(values)
         should_be_escaped = replacer_escaped_symbols(should_be_escaped)

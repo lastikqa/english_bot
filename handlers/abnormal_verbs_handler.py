@@ -19,7 +19,7 @@ async def process_abnormal_verbs(callback: CallbackQuery):
     if callback.data == "abnormal_verbs":
 
         key, values = gamer.game_data.getting_random_object_from_json()
-        sentences = gamer.getting_context(values[0])
+        sentences = await gamer.getting_context(values[0])
 
         sentences = replacer_escaped_symbols(list(sentences))
         translation = gamer.getting_absolute_translation()

@@ -1,7 +1,7 @@
 from english_bot_database.english_bot_database import EnglishBotDatabase
-import requests
 from bs4 import BeautifulSoup
 import random
+import aiohttp
 from config import database_name
 from api.context_english_api import ContextEnglishApi
 from api.random_chuck_jokes_api import RandomChuckJokesApi
@@ -17,17 +17,22 @@ class Games:
         self.game_data = FileManager(data)
         self.database = EnglishBotDatabase(user_id)
 
-    def getting_context(self, word: str) -> tuple[str, str]:
+    async def getting_context(self, word: str) -> tuple[str, str]:
         """english words should be seen in its contexts. the function gets a word and return a sentence with the word
         and translation of the sentence into russian"""
         find_word = list(word)
         find_word = find_word[0]
         word_url = word.replace(" ", "+")
-        page = requests.get(
-            url=ContextEnglishApi.context_english_url + word_url,
-            headers=ContextEnglishApi.context_english_headers,
-            cookies=ContextEnglishApi.context_english_cookies)
-        soup = BeautifulSoup(page.text, "html.parser")
+
+        async def rec(w: str):
+            async with aiohttp.ClientSession(headers=ContextEnglishApi.context_english_headers,
+                                             cookies=ContextEnglishApi.context_english_cookies) as session:
+                async with session.get(ContextEnglishApi.context_english_url + w) as response:
+                    return await response.text()
+
+        page = await rec(word_url)
+
+        soup = BeautifulSoup(page, "html.parser")
         sentences_soup = soup.findAll('span', class_="text")
         sentences = []
         for sentence in sentences_soup:
@@ -41,11 +46,11 @@ class Games:
         translation = translation_text(context, to_language=translation)
         return context, translation
 
-    def guessing_game(self):
+    async def guessing_game(self):
         self.database.checking_user_game()
         translation = self.database.checking_user_translation()
         user_language = self.database.checking_user_language()
-        answer, variants, level = self.getting_data_guessing_game()
+        answer, variants, level = await self.getting_data_guessing_game()
         question = translation_text(answer, to_language=user_language)
         if translation != "en":
             variants = [translation_text(i, to_language=translation) for i in variants]
@@ -58,13 +63,13 @@ class Games:
 
         return question, variants, level, audio
 
-    def getting_data_guessing_game(self, constructor=None):
+    async def getting_data_guessing_game(self, constructor=None):
         parts_of_speech = self.game_data.reading_json()
 
         if constructor == "phrase":
             parts_of_speech = self.game_data.getting_random_object_from_json()
             word = random.choice([i for i in parts_of_speech[1]])
-            answer, question = self.getting_context(word)
+            answer, question = await self.getting_context(word)
             return question, answer
 
         elif constructor == 'word':
@@ -84,8 +89,8 @@ class Games:
             level = parts_of_speech[user_game][answer]["level"]
         return answer, variants_of_words, level
 
-    def constructor_phrases(self, language):
-        question, answer = self.getting_data_guessing_game(constructor="phrase")
+    async def constructor_phrases(self, language):
+        question, answer = await self.getting_data_guessing_game(constructor="phrase")
         if language == "en":
             question, answer = answer, question
         variants = answer.split()
@@ -97,11 +102,11 @@ class Games:
         audio = self.giving_audio()
         return variants, question, audio
 
-    def word_constructor(self) -> tuple | str:
+    async def word_constructor(self) -> tuple | str:
         """the function splits the word into a  lists with its letters into a random order
         that is used to make inline keyboards"""
         self.database.updating_user_game(game="word_constructor")
-        answer = self.getting_data_guessing_game(constructor="word")
+        answer = await self.getting_data_guessing_game(constructor="word")
         translation = self.getting_absolute_translation()
         question = translation_text(answer, to_language=translation)
         variants = answer
@@ -118,11 +123,11 @@ class Games:
         audio = self.giving_audio()
         return question, variants, audio
 
-    def getting_jokes(self):
-        joke = requests.get(RandomChuckJokesApi.chuck_url).json()
-        joke = joke["joke"]
-        self.database.updating_answer(answer=joke)
-        return joke
+    @staticmethod
+    async def getting_jokes():
+        async with aiohttp.ClientSession() as session:
+            async with session.get(RandomChuckJokesApi.chuck_url) as response:
+                return await response.json()
 
     def getting_absolute_translation(self):
         translation = (self.database.checking_user_translation(),

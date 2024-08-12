@@ -44,7 +44,7 @@ async def processing_word_constructors(callback: CallbackQuery):
             if user_answer == answer:
                 database.updating_user_answer()
                 database.updating_user_rating()
-                question, variants, audio = gamer.word_constructor()
+                question, variants, audio = await gamer.word_constructor()
                 keyboard = create_inline_kb(3, default_menu, *variants)
                 file = BufferedInputFile(file=audio, filename=str(user_id))
                 await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"'{question}'"),

@@ -17,7 +17,9 @@ async def process_main_menu(callback: CallbackQuery):
     gamer = Games(user_id, data="english_5k.json")
 
     if callback.data == "/chuck":
-        joke = gamer.getting_jokes(user_id)
+        joke = await gamer.getting_jokes()
+        joke = joke["joke"]
+        gamer.database.updating_answer(joke)
         audio = gamer.giving_audio()
         keyboard = create_inline_kb(2, last_btn=default_menu, **chuck_keyboard)
         file = BufferedInputFile(file=audio, filename=str(user_id))

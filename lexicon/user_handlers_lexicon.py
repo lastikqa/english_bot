@@ -15,7 +15,7 @@ bot_commands = r"""_\!setnicname 'Nickname'_ \- to set your nickname
 
 _\!setidiom 'stir up a hornet's nest: provoke trouble'_ \- to add idioms
 
-_\!setlanguage 'de'_ \- to set your language ( 'de' \- German language\. use language codes) """
+_\!setlanguage 'de'_ \- to set your language \( 'de' \- German language\. use language codes\) """
 
 
 guess_words = r"""**_Guess Word game_**

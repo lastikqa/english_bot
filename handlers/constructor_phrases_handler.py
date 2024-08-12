@@ -41,7 +41,7 @@ async def process_main_menu(callback: CallbackQuery):
                 database.updating_user_answer()
                 win = (database.checking_counter_user_score()) + 1
                 database.updating_score_count(win=win)
-                variants, question, audio = gamer.constructor_phrases(language=language)
+                variants, question, audio = await gamer.constructor_phrases(language=language)
                 keyboard = create_inline_kb(2, default_menu, *variants)
                 file = BufferedInputFile(file=audio, filename=str(user_id))
                 await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"'{question}'"),

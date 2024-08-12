@@ -33,7 +33,7 @@ async def process_main_menu(callback: CallbackQuery):
 
     if callback.data == "word_constructor":
         database.updating_user_answer()
-        question, variants, audio = gamer.word_constructor()
+        question, variants, audio = await gamer.word_constructor()
         keyboard = create_inline_kb(3, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
         await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"'{question}'"),
@@ -42,7 +42,7 @@ async def process_main_menu(callback: CallbackQuery):
     if callback.data == "/v":
         database.updating_user_game(game="v")
         database.updating_user_answer()
-        variants, question, audio = gamer.constructor_phrases(language=language)
+        variants, question, audio = await gamer.constructor_phrases(language=language)
         keyboard = create_inline_kb(2, default_menu, *variants)
         file = BufferedInputFile(file=audio, filename=str(user_id))
         await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"'{question}'"),
