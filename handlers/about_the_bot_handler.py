@@ -1,4 +1,5 @@
 from aiogram import Router
+from data.file_manager import FileManager
 from keyboards.keyboards import create_inline_kb
 from lexicon.lexicon import default_menu
 from lexicon.user_handlers_lexicon import about_the_bot_keyboard, bot_commands, guess_words, constructor_games
@@ -13,7 +14,7 @@ router = Router()
 @router.callback_query(about_the_bot_filter)
 async def process_about_the_bot_menu(callback: CallbackQuery):
 
-    main_picture = os.path.abspath('data\\english_5k.png')
+    main_picture = FileManager.base_pic
 
     if callback.data == "/about_the_bot":
         keyboard = create_inline_kb(2, last_btn=default_menu, **about_the_bot_keyboard)

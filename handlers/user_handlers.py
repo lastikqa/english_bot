@@ -28,7 +28,8 @@ async def process_start_command(message: Message):
     if await database.looking_for_user_in_db() is False:
         await database.creating_object_user_in_db(first_name)
     keyboard = create_inline_kb(2, **start_keyboard)
-    file = os.path.dirname(os.path.abspath("english_5k.png")) + "\\" + "data\\english_5k.png"
+    file = FileManager.base_pic
+    print(file)
     file = FSInputFile(path = file)
     await message.answer_photo(photo=file,
                                caption="Hello. Choose something", reply_markup=keyboard)
@@ -54,10 +55,10 @@ async def menu_button(message: Message):
 
     elif "!setnicname" in message.text.split()[0].lower():
         nickname = message.text.split()[1]
-        await database.updating_user_first_name(user_id=message.from_user.id, nickname=nickname)
+        await database.updating_user_first_name( nickname=nickname)
 
     elif message.text == '/scores':
-        text = await database.getting_user_scores(user_id=message.from_user.id)
+        text = await database.getting_user_scores()
         keyboard = create_inline_kb(1, last_btn=default_menu)
         await message.answer(text=text, parse_mode="MarkdownV2", reply_markup=keyboard)
 

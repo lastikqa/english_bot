@@ -29,7 +29,7 @@ async def process_abnormal_verbs(callback: CallbackQuery):
                    f"\n\n\\* ***Past Form***   {values[1]} \n\n"
                    f"\\* ***Participle***   {values[2]} \n\n{sentences[0]} \n\n{sentences[1]}")
         keyboard = create_inline_kb(2, last_btn=default_menu, **abnormal_verbs_keyboard)
-        file_name = os.path.dirname(os.path.abspath("english_5k.png")) + "\\" + "data\\english_5k.png"
+        file_name = gamer.game_data.base_pic
         file = FSInputFile(path=file_name)
         await callback.message.edit_media(media=InputMediaPhoto(media=file, caption=caption, parse_mode="MarkdownV2"),
                                           reply_markup=keyboard)

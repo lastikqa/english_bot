@@ -13,6 +13,7 @@ router = Router()
 async def process_main_menu(callback: CallbackQuery):
     user_id = callback.from_user.id
     gamer = Games(user_id, data="english_5k.json")
+    file = gamer.game_data.base_pic
     database = gamer.database
 
     language = await database.checking_user_translation()
@@ -20,14 +21,14 @@ async def process_main_menu(callback: CallbackQuery):
     if callback.data == "menu_button":
         await database.updating_user_game()
         keyboard = create_inline_kb(2, **start_keyboard)
-        file_name = os.path.dirname(os.path.abspath("english_5k.png")) + "\\" + "data\\english_5k.png"
+        file_name = file
         file = FSInputFile(path=file_name)
         await callback.message.edit_media(media=InputMediaPhoto(media=file),
                                           text="Hello. Choose something", reply_markup=keyboard)
 
     if callback.data == "guess_word":
         keyboard = create_inline_kb(2, last_btn=default_menu, **guess_word_keyboard)
-        file_name = os.path.dirname(os.path.abspath("english_5k.png")) + "\\" + "data\\english_5k.png"
+        file_name = file
         file = FSInputFile(path=file_name)
         await callback.message.edit_media(media=InputMediaPhoto(media=file), text="Choose parts of speech",
                                           reply_markup=keyboard)

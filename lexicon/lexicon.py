@@ -17,4 +17,3 @@ abnormal_verbs_keyboard = {"Next Verb": "abnormal_verbs"}
 phrasal_verbs_keyboard = {"Next Verb": "phrasal_verbs"}
 
 english_idioms_keyboard = {"Next Idiom": "/idioms"}
-
