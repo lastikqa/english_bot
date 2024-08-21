@@ -7,7 +7,7 @@ from lexicon.user_handlers_lexicon import rating
 from aiogram.types import CallbackQuery
 from filters.filter_about_the_bot import about_the_bot_filter
 from aiogram.types import InputMediaPhoto, FSInputFile
-import os
+
 router = Router()
 
 
