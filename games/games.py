@@ -1,5 +1,5 @@
 from english_bot_database.english_bot_database import EnglishBotDatabase
-from bs4 import BeautifulSoup
+
 import random
 import aiohttp
 from api.context_english_api import ContextEnglishApi
@@ -18,27 +18,10 @@ class Games:
     async def getting_context(self, word: str) -> tuple[str, str]:
         """english words should be seen in its contexts. the function gets a word and return a sentence with the word
         and translation of the sentence into russian"""
-        find_word = list(word)
-        find_word = find_word[0]
-        word_url = word.replace(" ", "+")
-
-        async def rec(w: str):
-            async with aiohttp.ClientSession(headers=ContextEnglishApi.context_english_headers,
-                                             cookies=ContextEnglishApi.context_english_cookies) as session:
-                async with session.get(ContextEnglishApi.context_english_url + w) as response:
-                    return await response.text()
-
-        page = await rec(word_url)
-        soup = BeautifulSoup(page, "html.parser")
-        sentences_soup = soup.findAll('span', class_="text")
-        sentences = []
-        for sentence in sentences_soup:
-            sentence = sentence.text
-            sentences.append(sentence.strip())
-        sentences = sentences[31::]
+        api = ContextEnglishApi()
+        sentences = await api.getting_context(word)
+        print(sentences)
         context = random.choice(sentences)
-        while find_word not in context:
-            context = random.choice(sentences)
         translation = await self.getting_absolute_translation()
         translation = translation_text(context, to_language=translation)
         return context, translation
