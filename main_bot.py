@@ -10,7 +10,7 @@ from handlers import guess_words_handler
 from handlers import constructor_phrases_handler, chuck_norris_handler
 from handlers import abnormal_verbs_handler, phrasal_verbs_handler, english_idioms_handler
 
-# Вместо config.token нужно вставить токен вашего бота, полученный у @BotFather
+
 
 BOT_TOKEN = config.token
 
@@ -18,11 +18,11 @@ BOT_TOKEN = config.token
 async def main():
     EnglishBotDatabase.creating_users_db()
 
-    time.sleep(2)
+    await asyncio.sleep(2)
     bot = Bot(token=BOT_TOKEN)
     dp = Dispatcher()
 
-    # Регистриуем роутеры в диспетчере
+    # register routers in dispatcher
     dp.include_router(about_the_bot_handler.router)
     dp.include_router(user_handlers.router)
     dp.include_router(english_idioms_handler.router)
