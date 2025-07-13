@@ -4,10 +4,10 @@ import os
 
 
 class FileManager:
-    base_pic = os.path.dirname(os.path.abspath(__file__)) + "\\" + "english_5k.png"
+    base_pic = os.path.join(os.path.dirname(os.path.abspath(__file__)) , "english_5k.png")
 
     def __init__(self, filename="english_5k.json"):
-        self.filename = os.path.dirname(os.path.abspath(__file__)) + "\\" + filename
+        self.filename = os.path.join(os.path.dirname(os.path.abspath(__file__)) , filename)
 
     def reading_json(self):
         with open(self.filename, "r") as file:
