@@ -8,7 +8,7 @@ load_dotenv()
 file with token="your_token" and put into the root off the project'''
 
 token = os.getenv("token")
-
 ''' to set a service that provides translations '''
 
 translator = 'google'
+

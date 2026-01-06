@@ -8,10 +8,16 @@ def replacer_escaped_symbols(sentences: tuple | dict | str | list) -> str:
             replace = fr"\{symbol}"
             sentence = sentence.replace(symbol, replace)
         return sentence
+    if type(sentences) in (list, tuple):
+        new_list =[]
+        for item in sentences:
 
-    for item in sentences:
-        item_index = sentences.index(item)
-        replaced = replacing(item)
-        sentences.remove(item)
-        sentences.insert(item_index, replaced)
-    return sentences
+            item = replacing(item)
+            new_list.append(item)
+
+        return new_list
+    else:
+        return replacing(sentences)
+
+
+

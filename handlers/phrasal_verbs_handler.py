@@ -26,7 +26,7 @@ async def process_phrasal_verbs(callback: CallbackQuery):
         should_be_escaped = replacer_escaped_symbols(should_be_escaped)
         context, translation, values = should_be_escaped
         text = f" ***{key}***  \n\n{values} \n\n{context} \n\n{translation}"
-        audio = converting_text_to_audio(key)
+        audio = await converting_text_to_audio(key)
         keyboard = create_inline_kb(2, last_btn=default_menu, **phrasal_verbs_keyboard)
         file = BufferedInputFile(file=audio, filename=str(user_id))
         await callback.message.edit_media(media=InputMediaAudio(media=file,

@@ -1,7 +1,6 @@
 import asyncio
 from aiogram import Bot, Dispatcher
 from keyboards.keyboards import set_main_menu
-import time
 import config
 from english_bot_database.english_bot_database import EnglishBotDatabase
 from handlers import main_menu_handler, word_constructor_handler
@@ -9,8 +8,6 @@ from handlers import user_handlers, about_the_bot_handler
 from handlers import guess_words_handler
 from handlers import constructor_phrases_handler, chuck_norris_handler
 from handlers import abnormal_verbs_handler, phrasal_verbs_handler, english_idioms_handler
-
-
 
 BOT_TOKEN = config.token
 

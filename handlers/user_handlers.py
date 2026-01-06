@@ -1,7 +1,6 @@
-from aiogram import Bot
+import asyncio
 import os
 import time
-from config import token
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 from keyboards.keyboards import create_inline_kb
@@ -13,8 +12,6 @@ from data.file_manager import FileManager
 from aiogram.types import FSInputFile
 
 router = Router()
-time.sleep(2)
-bot = Bot(token=token)
 
 
 @router.message(CommandStart())
@@ -33,7 +30,7 @@ async def process_start_command(message: Message):
     file = FSInputFile(path = file)
     await message.answer_photo(photo=file,
                                caption="Hello. Choose something", reply_markup=keyboard)
-    await bot.delete_message(chat_id, message_id)
+    await message.bot.delete_message(chat_id, message_id)
 
 
 @router.message()
@@ -72,4 +69,4 @@ async def menu_button(message: Message):
             await database.updating_user_translation(translation="en")
             await database.updating_user_language(language=new_language)
 
-    await bot.delete_message(chat_id, message_id)
+    await message.bot.delete_message(chat_id, message_id)

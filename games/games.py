@@ -131,6 +131,6 @@ class Games:
             word = await self.database.checking_question()
         else:
             word = await self.database.checking_answer()
-        audio_bytes = converting_text_to_audio(word)
+        audio_bytes = await converting_text_to_audio(word)
         await self.database.updating_user_media_data(media=audio_bytes)
         return audio_bytes
