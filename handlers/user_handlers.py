@@ -1,6 +1,3 @@
-import asyncio
-import os
-import time
 from aiogram.filters import CommandStart
 from aiogram.types import Message
 from keyboards.keyboards import create_inline_kb
