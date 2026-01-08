@@ -10,17 +10,16 @@ class FileManager:
         self.filename = os.path.join(os.path.dirname(os.path.abspath(__file__)) , filename)
 
     def reading_json(self):
-        with open(self.filename, "r") as file:
+        with open(self.filename,"r",encoding="utf-8") as file:
             return json.load(file)
 
     def writing_json(self, data):
-        with open(self.filename, "w") as file:
+        with open(self.filename, "w",encoding="utf-8") as file:
             json.dump(data, file, indent=4)
 
     def creating_key_list(self) -> list:
         data = self.reading_json()
-        key_list = [key for key in data]
-        return key_list
+        return list(data)
 
     def getting_random_key_from_key_list(self) -> str:
         key_list = self.creating_key_list()

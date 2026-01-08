@@ -41,8 +41,8 @@ async def process_main_menu(callback: CallbackQuery):
         await callback.message.edit_media(media=InputMediaAudio(media=file, caption=f"'{question}'"),
                                           reply_markup=keyboard)
 
-    if callback.data == "/v":
-        await database.updating_user_game(game="v")
+    if callback.data == "phrase_constructor":
+        await database.updating_user_game(game="phrase_constructor")
         await database.updating_user_answer()
         variants, question, audio = await gamer.constructor_phrases(language=language)
         keyboard = create_inline_kb(2, default_menu, *variants)

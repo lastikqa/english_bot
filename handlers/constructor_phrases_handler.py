@@ -21,7 +21,7 @@ async def process_main_menu(callback: CallbackQuery):
     language = await database.checking_user_translation()
     audio = await database.getting_user_media_data()
 
-    if game_status == "v" and callback.data in user_variants:
+    if game_status == "phrase_constructor" and callback.data in user_variants:
         try:
             user_variants.remove(callback.data)
             await database.updating_user_variants(user_variants)

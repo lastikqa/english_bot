@@ -15,7 +15,7 @@ class Games:
         self.game_data = FileManager(data)
         self.database = EnglishBotDatabase(user_id)
 
-    async def getting_context(self, word: str) -> tuple[str, str]:
+    async def getting_context(self, word: str) -> list[str]:
         """english words should be seen in its contexts. the function gets a word and return a sentence with the word
         and translation of the sentence into russian"""
         api = ContextEnglishApi()
@@ -24,7 +24,7 @@ class Games:
         context = random.choice(sentences)
         translation = await self.getting_absolute_translation()
         translation = translation_text(context, to_language=translation)
-        return context, translation
+        return [context, translation]
 
     async def guessing_game(self):
         await self.database.checking_user_game()
@@ -43,19 +43,21 @@ class Games:
 
         return question, variants, level, audio
 
+    def _get_random_word(self):
+        """Helper method to get a random word from parts_of_speech."""
+        parts_of_speech = self.game_data.getting_random_object_from_json()
+        return random.choice([i for i in parts_of_speech[1]])
+
     async def getting_data_guessing_game(self, constructor=None):
         parts_of_speech = self.game_data.reading_json()
 
         if constructor == "phrase":
-            parts_of_speech = self.game_data.getting_random_object_from_json()
-            word = random.choice([i for i in parts_of_speech[1]])
+            word = self._get_random_word()
             answer, question = await self.getting_context(word)
             return question, answer
 
         elif constructor == 'word':
-            parts_of_speech = self.game_data.getting_random_object_from_json()
-            word = random.choice([i for i in parts_of_speech[1]])
-            return word
+            return self._get_random_word()
 
         else:
             user_game = await self.database.checking_user_game()
@@ -65,9 +67,8 @@ class Games:
                 variants_of_words.append(random.choice(list_of_words))
 
             answer = random.choice(variants_of_words)
-
             level = parts_of_speech[user_game][answer]["level"]
-        return answer, variants_of_words, level
+            return answer, variants_of_words, level
 
     async def constructor_phrases(self, language):
         question, answer = await self.getting_data_guessing_game(constructor="phrase")

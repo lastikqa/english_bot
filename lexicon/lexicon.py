@@ -1,4 +1,4 @@
-start_keyboard = {"Guess Word": "guess_word", "Word Constructor": "word_constructor", "Phrase Constructor": "/v",
+start_keyboard = {"Guess Word": "guess_word", "Word Constructor": "word_constructor", "Phrase Constructor": "phrase_constructor",
                   "Abnormal Verbs": "abnormal_verbs", "Phrasal Verbs": "phrasal_verbs", "English Idioms": '/idioms',
                   "Chuck Norris": "/chuck", "About The Bot": "/about_the_bot"}
 
